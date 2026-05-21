@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+pip/
+
+# Compiled binaries (keep only source + bin/final)
+bin/*
+!bin/final/
+
+# .NET build artifacts
+seb-patcher/bin/
+seb-patcher/obj/
+display-patcher/bin/
+display-patcher/obj/
+il-patcher/
+
+# Third-party tools (download separately)
+tools/dnSpy/
+tools/dnSpy.zip
+
+# SEB installer (too large)
+seb-layout/
+
+# Extracted temp files
+seb-extract/
+seb-extract2/
+
+# Test files
+test-patch/
+
+# Logs and reports (contain sensitive info)
+vm_logs/
+*.log
+report.json
+
+# VC++ files (can extract from host system)
+vcpp-files/
+
+# Downloads and installers
+*.crdownload
+vc_redist.x64.exe
+
+# VMware suspend/snapshot files
+*.vmss
+*.vmsn
+*.vmsd
+
+# Standalone early attempts (not part of final solution)
+patch_monitor.cs
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# OS
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,4 @@
+pycryptodome>=3.19.0
+psutil>=5.9.0
+click>=8.1.0
+colorama>=0.4.6
