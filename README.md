@@ -1,5 +1,7 @@
 # Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
 
+**English | [中文](README_zh.md)**
+
 A toolkit for running Safe Exam Browser inside a VMware virtual machine. Bypasses SEB's VM detection and display validation through IL patching of `SafeExamBrowser.Monitoring.dll`.
 
 ## How It Works
