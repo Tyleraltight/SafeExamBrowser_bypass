@@ -1,8 +1,27 @@
 # Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
 
+[![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
+[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
+
 **English | [中文](README_zh.md)**
 
+> **For educational and research purposes only.** Users are responsible for compliance with their institution's policies.
+
 A toolkit for running Safe Exam Browser inside a VMware virtual machine. Bypasses SEB's VM detection and display validation through IL patching of `SafeExamBrowser.Monitoring.dll`.
+
+---
+
+## Get Help & Support
+
+Need help setting up? Stuck on a step? Want the pre-built one-click package?
+
+[![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/YOUR_TELEGRAM_HANDLE)
+
+- **Free support**: Open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
+- **Priority support**: Join our Telegram group for step-by-step guidance
+- **Pre-built package**: Ready-to-use binaries + video walkthrough available via Telegram
 
 ## How It Works
 
@@ -29,6 +48,43 @@ Host Machine (your real computer)
 1. **`seb-patcher`** (dnlib) — Patches `VirtualMachineDetector` class. Makes all 7 VM detection methods return `false`.
 
 2. **`display-patcher`** (Mono.Cecil) — Patches `DisplayMonitor.TryLoadDisplays()` to return a fake internal display, and `ValidateConfiguration` to return `IsAllowed=true`. This solves the "0 displays detected" error that occurs in VMware.
+
+## Screenshots
+
+**Successful patch — all 7 VM detection methods disabled:**
+```
+[*] Patching VirtualMachineDetector...
+    [+] IsVirtualMachine()    -> returns false
+    [+] HasNoSystemHardware() -> returns false
+    [+] HasVirtualDevice()    -> returns false
+    [+] HasVirtualMacAddress()-> returns false
+    [+] IsVirtualCpu()        -> returns false
+    [+] IsVirtualRegistry()   -> returns false
+    [+] IsVirtualSystem()     -> returns false
+
+SUCCESS! 7 method(s) patched.
+```
+
+**Display patcher — WMI bypass and configuration override:**
+```
+[*] Patching ValidateConfiguration...
+    [+] -> returns ValidationResult(IsAllowed=true, Internal=1)
+[*] Patching TryLoadDisplays...
+    [+] Set Technology = Internal (0x80000000)
+    [+] TryLoadDisplays -> returns true with fake internal display
+
+SUCCESS! 6 method(s) patched.
+```
+
+**SEB running in VMware — no VM detection, no display errors:**
+```
+Display Monitor: Started!
+Disallowed Displays: none.
+Allowed Displays: 1.
+Application integrity is compromised! (WARNING only — does not block)
+```
+
+> Want to see more? Check the [Troubleshooting](#troubleshooting) section for real error logs and fixes.
 
 ## Prerequisites
 
@@ -386,6 +442,49 @@ cd display-patcher
 dotnet restore
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
+
+## FAQ
+
+**Q: Will my teacher/school find out?**
+A: SEB logs may contain `VMware Virtual Platform` and `integrity compromised` warnings. If your school does NOT require you to submit SEB logs after the exam, the server only sees "exam completed normally." Always clean logs before any submission. See [Troubleshooting](#seb-logs-contain-vmware-traces).
+
+**Q: Which SEB versions does this work with?**
+A: Currently tested and confirmed on **SEB v3.10.1.864**. Other versions may work but are not guaranteed. SEB updates can invalidate the patches — re-run the patchers after updating.
+
+**Q: Does this work with macOS/Linux?**
+A: No. This toolkit is Windows-only (both the patcher tools and the VMware setup). The SEB binary being patched is a Windows .NET assembly.
+
+**Q: Can I use VirtualBox instead of VMware?**
+A: Technically possible but not supported. VMware's `smbios.reflecthost` and hypervisor hiding are more mature. VirtualBox leaks more VM signatures that SEB can detect.
+
+**Q: What if SEB asks for a configuration password?**
+A: You need the `.seb` configuration file from your institution. Download it from your exam portal and double-click it inside the VM. Do NOT open SEB directly — launch it via the `.seb` file.
+
+**Q: I get "Application integrity is compromised" — is it broken?**
+A: No. This is a **warning**, not a blocker. SEB continues to run normally. The warning appears because the patched DLL differs from the original hash. It's logged locally but does not prevent the exam.
+
+**Q: The patched DLL got reverted after a Windows update. What do I do?**
+A: Re-run the patcher. Windows updates can sometimes overwrite DLLs in `Program Files`. Keep a copy of the patched DLL and the replacement script for quick re-patching.
+
+**Q: Can I get step-by-step help?**
+A: Yes! Join our [Telegram group](https://t.me/YOUR_TELEGRAM_HANDLE) for priority support, or open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) for free assistance.
+
+For more questions, see the full [FAQ document](FAQ.md).
+
+---
+
+## Disclaimer
+
+This toolkit is provided **for educational and research purposes only**. It is intended for security researchers, penetration testers, and students studying software protection mechanisms.
+
+**By using this software, you agree that:**
+- You are solely responsible for any consequences of its use
+- You will comply with all applicable laws and your institution's academic policies
+- The authors bear no liability for misuse
+
+We do not encourage academic dishonesty. Use responsibly.
+
+---
 
 ## Credits
 
