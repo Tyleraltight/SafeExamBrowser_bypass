@@ -1,8 +1,27 @@
 # Safe Exam Browser (SEB) v3.10.1 绕过工具包
 
+[![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
+[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
+
 **[English](README.md) | 中文**
 
+> **仅供教育和研究用途。** 使用者需自行遵守所在机构的相关政策。
+
 在 VMware 虚拟机中运行 Safe Exam Browser。通过 IL 补丁修改 `SafeExamBrowser.Monitoring.dll`，绕过 SEB 的虚拟机检测和显示器验证。
+
+---
+
+## 获取帮助与支持
+
+需要帮助设置？卡在某个步骤了？想要预编译的一键工具包？
+
+[![Telegram](https://img.shields.io/badge/Telegram-加入群组-blue?logo=telegram)](https://t.me/YOUR_TELEGRAM_HANDLE)
+
+- **免费支持**：在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中提问
+- **优先支持**：加入我们的 Telegram 群组获取一对一指导
+- **预编译工具包**：开箱即用的二进制文件 + 视频教程，通过 Telegram 获取
 
 ## 工作原理
 
@@ -28,6 +47,43 @@
 1. **`seb-patcher`**（基于 dnlib）— 补丁 `VirtualMachineDetector` 类，使全部 7 个虚拟机检测方法返回 `false`。
 
 2. **`display-patcher`**（基于 Mono.Cecil）— 补丁 `DisplayMonitor.TryLoadDisplays()` 返回一个伪造的内部显示器，并将 `ValidateConfiguration` 设为 `IsAllowed=true`。解决了 VMware 中"检测到 0 个显示器"的错误。
+
+## 运行截图
+
+**成功补丁 — 全部 7 个虚拟机检测方法已禁用：**
+```
+[*] Patching VirtualMachineDetector...
+    [+] IsVirtualMachine()    -> returns false
+    [+] HasNoSystemHardware() -> returns false
+    [+] HasVirtualDevice()    -> returns false
+    [+] HasVirtualMacAddress()-> returns false
+    [+] IsVirtualCpu()        -> returns false
+    [+] IsVirtualRegistry()   -> returns false
+    [+] IsVirtualSystem()     -> returns false
+
+SUCCESS! 7 method(s) patched.
+```
+
+**显示器补丁 — WMI 绕过和配置覆盖：**
+```
+[*] Patching ValidateConfiguration...
+    [+] -> returns ValidationResult(IsAllowed=true, Internal=1)
+[*] Patching TryLoadDisplays...
+    [+] Set Technology = Internal (0x80000000)
+    [+] TryLoadDisplays -> returns true with fake internal display
+
+SUCCESS! 6 method(s) patched.
+```
+
+**SEB 在 VMware 中正常运行 — 无虚拟机检测、无显示器错误：**
+```
+Display Monitor: Started!
+Disallowed Displays: none.
+Allowed Displays: 1.
+Application integrity is compromised!（仅警告 — 不会阻止运行）
+```
+
+> 想看更多？查看[常见问题排查](#常见问题排查)部分的真实错误日志和修复方案。
 
 ## 前置条件
 
@@ -386,6 +442,49 @@ cd display-patcher
 dotnet restore
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
+
+## 常见问题（FAQ）
+
+**问：老师/学校会发现吗？**
+答：SEB 日志中可能包含 `VMware Virtual Platform` 和 `integrity compromised` 警告。如果你的学校不需要你提交 SEB 日志，服务器端只会看到"考试正常完成"。提交日志前务必清理。参见 [SEB 日志包含 VMware 痕迹](#seb-日志包含-vmware-痕迹)。
+
+**问：支持哪些 SEB 版本？**
+答：目前已测试确认适用于 **SEB v3.10.1.864**。其他版本可能有效但不保证。SEB 更新后补丁可能失效 — 更新后需重新运行补丁工具。
+
+**问：支持 macOS 或 Linux 吗？**
+答：不支持。本工具仅适用于 Windows（补丁工具和 VMware 设置都是 Windows 环境）。被补丁的 SEB 二进制文件是 Windows .NET 程序集。
+
+**问：可以用 VirtualBox 代替 VMware 吗？**
+答：技术上可以但不推荐。VMware 的 `smbios.reflecthost` 和虚拟机隐藏功能更成熟，VirtualBox 泄漏更多虚拟机特征，容易被 SEB 检测到。
+
+**问：SEB 要求输入配置密码怎么办？**
+答：你需要从学校获取 `.seb` 配置文件。从考试页面下载 `.seb` 文件，在虚拟机中双击打开。不要直接打开 SEB 程序 — 通过 `.seb` 文件启动。
+
+**问：出现 "Application integrity is compromised" 是不是坏了？**
+答：没有。这是一个**警告**，不是阻止。SEB 会正常继续运行。出现这个警告是因为补丁后的 DLL 哈希值与原始值不同。它只记录在本地日志中，不会阻止考试。
+
+**问：Windows 更新后 DLL 被还原了怎么办？**
+答：重新运行补丁工具。Windows 更新有时会覆盖 `Program Files` 中的 DLL。保留补丁后的 DLL 和替换脚本副本以便快速重新打补丁。
+
+**问：能得到一对一的帮助吗？**
+答：可以！加入我们的 [Telegram 群组](https://t.me/YOUR_TELEGRAM_HANDLE)获取优先支持，或在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中免费提问。
+
+更多问题请查看完整的 [FAQ 文档](FAQ.md)。
+
+---
+
+## 免责声明
+
+本工具包**仅供教育和研究用途**。面向安全研究员、渗透测试人员和研究软件保护机制的学生。
+
+**使用本软件即表示您同意：**
+- 您对使用后果承担全部责任
+- 您将遵守所有适用法律和所在机构的学术政策
+- 作者不对任何误用行为承担责任
+
+我们不鼓励学术不端行为。请负责任地使用。
+
+---
 
 ## 致谢
 
