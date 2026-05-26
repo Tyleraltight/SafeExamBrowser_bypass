@@ -19,11 +19,10 @@
 
 需要帮助设置？卡在某个步骤了？想要预编译的一键工具包？
 
-[![Telegram](https://img.shields.io/badge/Telegram-加入群组-blue?logo=telegram)](https://t.me/YOUR_TELEGRAM_HANDLE)
 
 - **免费支持**：在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中提问
-- **优先支持**：加入我们的 Telegram 群组获取一对一指导
-- **预编译工具包**：开箱即用的二进制文件 + 视频教程，通过 Telegram 获取
+- **优先支持** 联系我的邮箱：chuzihang456@gmail.com 进入群组获取一对一指导
+- **预编译工具包**：开箱即用的二进制文件 + 视频教程，通过 群组 获取
 
 ## 工作原理
 
