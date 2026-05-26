@@ -19,12 +19,10 @@ A toolkit for running Safe Exam Browser inside a VMware virtual machine. Bypasse
 
 Need help setting up? Stuck on a step? Want the pre-built one-click package?
 
-[![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/YOUR_TELEGRAM_HANDLE)
 
 - **Free support**: Open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
-- **Priority support**: Join our Telegram group for step-by-step guidance
-- **Pre-built package**: Ready-to-use binaries + video walkthrough available via Telegram
-
+- **Priority support**: Contact my email: chuzihang456@gmail.com Join the group for one-on-one guidance
+- **Pre-built package**: Out-of-the-box binary file + Video tutorials, obtained via Groups
 ## How It Works
 
 ```
