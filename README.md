@@ -7,6 +7,8 @@
 
 **English | [中文](README_zh.md)**
 
+![SEB Running in VMware](VM_SEB_running.png)
+
 > **For educational and research purposes only.** Users are responsible for compliance with their institution's policies.
 
 A toolkit for running Safe Exam Browser inside a VMware virtual machine. Bypasses SEB's VM detection and display validation through IL patching of `SafeExamBrowser.Monitoring.dll`.
