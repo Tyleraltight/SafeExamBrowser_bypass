@@ -7,6 +7,8 @@
 
 **[English](README.md) | 中文**
 
+![SEB 在 VMware 中成功运行](VM_SEB_running.png)
+
 > **仅供教育和研究用途。** 使用者需自行遵守所在机构的相关政策。
 
 在 VMware 虚拟机中运行 Safe Exam Browser。通过 IL 补丁修改 `SafeExamBrowser.Monitoring.dll`，绕过 SEB 的虚拟机检测和显示器验证。
