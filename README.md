@@ -22,7 +22,7 @@ Need help setting up? Stuck on a step? Want the pre-built one-click package?
 
 - **Free support**: Open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
 - **Priority support**: Contact my email: chuzihang456@gmail.com
-- **Pre-built package**: Out-of-the-box binary file + Video tutorials, obtained via Groups
+- **Pre-built package**: Out-of-the-box binary file
 ## How It Works
 
 ```
