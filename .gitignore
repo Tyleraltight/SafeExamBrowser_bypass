@@ -41,6 +41,9 @@ vcpp-files/
 # Downloads and installers
 *.crdownload
 vc_redist.x64.exe
+*.iso
+*.html
+.gh_upload.json
 
 # VMware suspend/snapshot files
 *.vmss

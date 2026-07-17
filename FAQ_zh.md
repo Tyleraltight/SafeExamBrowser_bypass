@@ -166,7 +166,7 @@ powershell -ExecutionPolicy Bypass -File "script.ps1"
 ### 在哪里获取帮助？
 
 - **免费**：在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中提问
-- **优先**：加入我们的 [Telegram 群组](https://t.me/YOUR_TELEGRAM_HANDLE)获取一对一指导
+- **优先**：通过邮件联系 [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com) 获取一对一指导
 
 ### 发现了 Bug / SEB 更新后补丁失效了
 

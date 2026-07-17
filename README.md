@@ -19,10 +19,12 @@ A toolkit for running Safe Exam Browser inside a VMware virtual machine. Bypasse
 
 Need help setting up? Stuck on a step? Want the pre-built one-click package?
 
+[![Email](https://img.shields.io/badge/Email-Contact%20Me-blue?logo=gmail)](mailto:chuzihang456@gmail.com)
 
 - **Free support**: Open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
-- **Priority support**: Contact my email: chuzihang456@gmail.com
+- **Priority support**: Contact via email: [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com)
 - **Pre-built package**: Out-of-the-box binary file
+
 ## How It Works
 
 ```
@@ -286,6 +288,26 @@ We hit every single one of these during development. Learn from our pain.
 
 **Fix:** Delete the `.vmss` and `.vmsd` files in the VM directory.
 
+### VM reports corruption after editing .vmx
+
+**Symptom:** After editing the `.vmx` file, VMware reports the VM as corrupted and fails to open. Deleting the newly added lines fixes it.
+
+**Cause:** Most commonly caused by file encoding issues. Windows Notepad automatically adds a UTF-8 BOM (Byte Order Mark) when saving, which VMware cannot parse.
+
+**Fix:**
+
+1. **Use the right editor** — Use [Notepad++](https://notepad-plus-plus.org/) or VS Code, not Windows Notepad
+2. **Save as UTF-8 without BOM** — In Notepad++, select `Encoding → Encode in UTF-8` (not "UTF-8-BOM")
+3. **Avoid duplicate keys** — Before adding, `Ctrl+F` search for each key name; modify existing values instead of adding duplicates
+4. **Ensure VMware is fully closed** — VM must be **powered off** (not suspended), and VMware Workstation must be completely exited
+
+```powershell
+# Check if file has BOM (first 3 bytes 239 187 191 = BOM present)
+Get-Content "your-vm.vmx" -Encoding Byte | Select-Object -First 3
+```
+
+> **Related Issue:** [#1 - curropt vm](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues/1)
+
 ### SEB installer stuck at "Processing: VC++ Runtime"
 
 **Cause:** VC++ installer runs silently in the background and may pop up UAC dialogs hidden behind other windows.
@@ -467,7 +489,7 @@ A: No. This is a **warning**, not a blocker. SEB continues to run normally. The 
 A: Re-run the patcher. Windows updates can sometimes overwrite DLLs in `Program Files`. Keep a copy of the patched DLL and the replacement script for quick re-patching.
 
 **Q: Can I get step-by-step help?**
-A: Yes! Join our [Telegram group](https://t.me/YOUR_TELEGRAM_HANDLE) for priority support, or open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) for free assistance.
+A: Yes! Contact us via email at [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com) for priority support, or open a [GitHub Issue](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) for free assistance.
 
 For more questions, see the full [FAQ document](FAQ.md).
 

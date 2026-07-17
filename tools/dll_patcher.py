@@ -57,28 +57,51 @@ def file_hash(filepath):
 def download_file(url, dest, verbose=True):
     log = print if verbose else lambda *a, **k: None
     try:
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
         log(f"  Downloading: {url}")
         log(f"  Destination: {dest}")
         req = urllib.request.Request(url, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
         })
-        with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
-            total = response.headers.get("Content-Length")
-            total = int(total) if total else None
-            with open(dest, "wb") as f:
-                downloaded = 0
-                while True:
-                    chunk = response.read(8192)
-                    if not chunk:
-                        break
-                    f.write(chunk)
-                    downloaded += len(chunk)
-                    if total:
-                        pct = (downloaded / total) * 100
-                        log(f"  Progress: {pct:.1f}%")
+        # Try with default SSL verification first
+        ctx = None
+        try:
+            with urllib.request.urlopen(req, timeout=60) as response:
+                total = response.headers.get("Content-Length")
+                total = int(total) if total else None
+                with open(dest, "wb") as f:
+                    downloaded = 0
+                    while True:
+                        chunk = response.read(8192)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+                        downloaded += len(chunk)
+                        if total and downloaded % (64 * 1024) < 8192:
+                            pct = (downloaded / total) * 100
+                            log(f"  Progress: {pct:.1f}%")
+        except ssl.SSLError as ssl_err:
+            log(f"  [!] SSL verification failed: {ssl_err}")
+            log(f"  [!] Retrying without SSL verification (less secure)...")
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+            })
+            with urllib.request.urlopen(req, context=ctx, timeout=60) as response:
+                total = response.headers.get("Content-Length")
+                total = int(total) if total else None
+                with open(dest, "wb") as f:
+                    downloaded = 0
+                    while True:
+                        chunk = response.read(8192)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+                        downloaded += len(chunk)
+                        if total and downloaded % (64 * 1024) < 8192:
+                            pct = (downloaded / total) * 100
+                            log(f"  Progress: {pct:.1f}%")
         log(f"  [+] Download complete: {dest}")
         return True
     except Exception as e:

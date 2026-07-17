@@ -312,7 +312,7 @@ class Program
 
                                 case "Identifier":
                                     il.Append(il.Create(OpCodes.Ldloc, displayVar));
-                                    il.Append(il.Create(OpCodes.Ldstr, "VMware Virtual Display"));
+                                    il.Append(il.Create(OpCodes.Ldstr, "Generic PnP Monitor"));
                                     il.Append(il.Create(OpCodes.Callvirt, importedSetter));
                                     break;
                             }

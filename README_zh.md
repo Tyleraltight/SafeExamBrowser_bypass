@@ -19,9 +19,10 @@
 
 需要帮助设置？卡在某个步骤了？想要预编译的一键工具包？
 
+[![Email](https://img.shields.io/badge/Email-联系我们-blue?logo=gmail)](mailto:chuzihang456@gmail.com)
 
 - **免费支持**：在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中提问
-- **优先支持** 联系我的邮箱：chuzihang456@gmail.com
+- **优先支持**：通过邮件联系：[chuzihang456@gmail.com](mailto:chuzihang456@gmail.com)
 - **预编译工具包**：开箱即用的二进制文件
 
 ## 工作原理
@@ -287,6 +288,26 @@ python tools/main.py logs                 # 清理 SEB 日志
 
 **修复：** 删除虚拟机目录中的 `.vmss` 和 `.vmsd` 文件。
 
+### 编辑 .vmx 后虚拟机报损坏
+
+**症状：** 编辑 `.vmx` 文件后打开虚拟机，VMware 报告虚拟机损坏，无法打开。删除刚添加的配置行后恢复正常。
+
+**原因：** 最常见的原因是文件编码问题。Windows 记事本保存时会自动添加 UTF-8 BOM（字节顺序标记），VMware 无法正确解析带 BOM 的 `.vmx` 文件。
+
+**修复：**
+
+1. **使用正确的编辑器** — 用 [Notepad++](https://notepad-plus-plus.org/) 或 VS Code 编辑，不要用 Windows 记事本
+2. **保存为无 BOM 的 UTF-8** — Notepad++ 中选择 `编码 → 以 UTF-8 编码`（不是"UTF-8-BOM"）
+3. **避免重复键** — 添加前先 `Ctrl+F` 搜索每个键名，已存在的直接修改值，不要重复添加
+4. **确保 VMware 完全关闭** — 虚拟机必须**关机**（不是挂起），且 VMware Workstation 程序已完全退出
+
+```powershell
+# 验证文件是否有 BOM（前3个字节为 239 187 191 即为有 BOM）
+Get-Content "your-vm.vmx" -Encoding Byte | Select-Object -First 3
+```
+
+> **相关 Issue：** [#1 - curropt vm](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues/1)
+
 ### SEB 安装器卡在 "Processing: VC++ Runtime"
 
 **原因：** VC++ 安装器在后台静默运行，可能会弹出 UAC 对话框被其他窗口挡住。
@@ -468,7 +489,7 @@ dotnet publish -c Release -r win-x64 --self-contained true
 答：重新运行补丁工具。Windows 更新有时会覆盖 `Program Files` 中的 DLL。保留补丁后的 DLL 和替换脚本副本以便快速重新打补丁。
 
 **问：能得到一对一的帮助吗？**
-答：可以！加入我们的 [Telegram 群组](https://t.me/YOUR_TELEGRAM_HANDLE)获取优先支持，或在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中免费提问。
+答：可以！通过邮件联系 [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com) 获取优先支持，或在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中免费提问。
 
 更多问题请查看完整的 [FAQ 文档](FAQ.md)。
 
