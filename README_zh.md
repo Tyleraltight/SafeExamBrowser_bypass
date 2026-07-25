@@ -1,58 +1,58 @@
-﻿# Safe Exam Browser (SEB) v3.10.1 缁曡繃宸ュ叿鍖?
+﻿# Safe Exam Browser (SEB) v3.10.1 绕过工具包
 
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
 [![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
-**[English](README.md) | 涓枃**
+**[English](README.md) | 中文**
 
-![SEB 鍦?VMware 涓垚鍔熻繍琛宂(VM_SEB_running.png)
+![SEB 在 VMware 中成功运行](VM_SEB_running.png)
 
-> **浠呬緵鏁欒偛鍜岀爺绌剁敤閫斻€?* 浣跨敤鑰呴渶鑷閬靛畧鎵€鍦ㄦ満鏋勭殑鐩稿叧鏀跨瓥銆?
+> **仅供教育和研究用途。** 使用者需自行遵守所在机构的相关政策。
 
-鍦?VMware 铏氭嫙鏈轰腑杩愯 Safe Exam Browser銆傞€氳繃 IL 琛ヤ竵淇敼 `SafeExamBrowser.Monitoring.dll`锛岀粫杩?SEB 鐨勮櫄鎷熸満妫€娴嬪拰鏄剧ず鍣ㄩ獙璇併€?
+在 VMware 虚拟机中运行 Safe Exam Browser。通过 IL 补丁修改 `SafeExamBrowser.Monitoring.dll`，绕过 SEB 的虚拟机检测和显示器验证。
 
 ---
 
-## 鑾峰彇甯姪涓庢敮鎸?
+## 获取帮助与支持
 
-闇€瑕佸府鍔╄缃紵鍗″湪鏌愪釜姝ラ浜嗭紵鎯宠棰勭紪璇戠殑涓€閿伐鍏峰寘锛?
+需要帮助设置？卡在某个步骤了？想要预编译的一键工具包？
 
-[![Email](https://img.shields.io/badge/Email-鑱旂郴鎴戜滑-blue?logo=gmail)](mailto:chuzihang456@gmail.com)
+[![Email](https://img.shields.io/badge/Email-联系我们-blue?logo=gmail)](mailto:chuzihang456@gmail.com)
 
-- **鍏嶈垂鏀寔**锛氬湪 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 涓彁闂?
-- **浼樺厛鏀寔**锛氶€氳繃閭欢鑱旂郴锛歔chuzihang456@gmail.com](mailto:chuzihang456@gmail.com)
-- **棰勭紪璇戝伐鍏峰寘**锛氬紑绠卞嵆鐢ㄧ殑浜岃繘鍒舵枃浠?
+- **免费支持**：在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中提问
+- **优先支持**：通过邮件联系：[chuzihang456@gmail.com](mailto:chuzihang456@gmail.com)
+- **预编译工具包**：开箱即用的二进制文件
 
-## 宸ヤ綔鍘熺悊
+## 工作原理
 
 ```
-瀹夸富鏈猴紙浣犵殑鐪熸満锛?
-鈹?
-鈹? Chrome / Edge / 浠讳綍搴旂敤 鈫?瀹屽叏鑷敱锛屾病鏈変换浣曢檺鍒?
-鈹?
-鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
-鈹? 鈹? VMware Workstation锛堢獥鍙ｏ級       鈹?
-鈹? 鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹愨攤
-鈹? 鈹? 鈹? Windows 10 铏氭嫙鏈?           鈹傗攤
-鈹? 鈹? 鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鈹傗攤
-鈹? 鈹? 鈹? 鈹? SEB锛堝凡琛ヤ竵锛?       鈹?  鈹傗攤
-鈹? 鈹? 鈹? 鈹? 浠ヤ负鑷繁鍦ㄧ湡鏈轰笂杩愯   鈹?  鈹傗攤
-鈹? 鈹? 鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鈹傗攤
-鈹? 鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹樷攤
-鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+宿主机（你的真机）
+│
+│  Chrome / Edge / 任何应用 ← 完全自由，没有任何限制
+│
+│  ┌─────────────────────────────────┐
+│  │  VMware Workstation（窗口）       │
+│  │  ┌─────────────────────────────┐│
+│  │  │  Windows 10 虚拟机            ││
+│  │  │  ┌─────────────────────┐   ││
+│  │  │  │  SEB（已补丁）        │   ││
+│  │  │  │  以为自己在真机上运行   │   ││
+│  │  │  └─────────────────────┘   ││
+│  │  └─────────────────────────────┘│
+│  └─────────────────────────────────┘
 ```
 
-**涓や釜琛ヤ竵宸ュ叿瀹屾垚鏍稿績宸ヤ綔锛?*
+**两个补丁工具完成核心工作：**
 
-1. **`seb-patcher`**锛堝熀浜?dnlib锛夆€?琛ヤ竵 `VirtualMachineDetector` 绫伙紝浣垮叏閮?7 涓櫄鎷熸満妫€娴嬫柟娉曡繑鍥?`false`銆?
+1. **`seb-patcher`**（基于 dnlib）— 补丁 `VirtualMachineDetector` 类，使全部 7 个虚拟机检测方法返回 `false`。
 
-2. **`display-patcher`**锛堝熀浜?Mono.Cecil锛夆€?琛ヤ竵 `DisplayMonitor.TryLoadDisplays()` 杩斿洖涓€涓吉閫犵殑鍐呴儴鏄剧ず鍣紝骞跺皢 `ValidateConfiguration` 璁句负 `IsAllowed=true`銆傝В鍐充簡 VMware 涓?妫€娴嬪埌 0 涓樉绀哄櫒"鐨勯敊璇€?
+2. **`display-patcher`**（基于 Mono.Cecil）— 补丁 `DisplayMonitor.TryLoadDisplays()` 返回一个伪造的内部显示器，并将 `ValidateConfiguration` 设为 `IsAllowed=true`。解决了 VMware 中"检测到 0 个显示器"的错误。
 
-## 杩愯鎴浘
+## 运行截图
 
-**鎴愬姛琛ヤ竵 鈥?鍏ㄩ儴 7 涓櫄鎷熸満妫€娴嬫柟娉曞凡绂佺敤锛?*
+**成功补丁 — 全部 7 个虚拟机检测方法已禁用：**
 ```
 [*] Patching VirtualMachineDetector...
     [+] IsVirtualMachine()    -> returns false
@@ -66,7 +66,7 @@
 SUCCESS! 7 method(s) patched.
 ```
 
-**鏄剧ず鍣ㄨˉ涓?鈥?WMI 缁曡繃鍜岄厤缃鐩栵細**
+**显示器补丁 — WMI 绕过和配置覆盖：**
 ```
 [*] Patching ValidateConfiguration...
     [+] -> returns ValidationResult(IsAllowed=true, Internal=1)
@@ -77,37 +77,37 @@ SUCCESS! 7 method(s) patched.
 SUCCESS! 6 method(s) patched.
 ```
 
-**SEB 鍦?VMware 涓甯歌繍琛?鈥?鏃犺櫄鎷熸満妫€娴嬨€佹棤鏄剧ず鍣ㄩ敊璇細**
+**SEB 在 VMware 中正常运行 — 无虚拟机检测、无显示器错误：**
 ```
 Display Monitor: Started!
 Disallowed Displays: none.
 Allowed Displays: 1.
-Application integrity is compromised!锛堜粎璀﹀憡 鈥?涓嶄細闃绘杩愯锛?
+Application integrity is compromised!（仅警告 — 不会阻止运行）
 ```
 
-> 鎯崇湅鏇村锛熸煡鐪媅甯歌闂鎺掓煡](#甯歌闂鎺掓煡)閮ㄥ垎鐨勭湡瀹為敊璇棩蹇楀拰淇鏂规銆?
+> 想看更多？查看[常见问题排查](#常见问题排查)部分的真实错误日志和修复方案。
 
-## 鍓嶇疆鏉′欢
+## 前置条件
 
-| 杞欢 | 鐢ㄩ€?|
+| 软件 | 用途 |
 |---|---|
-| VMware Workstation 26H1锛堟垨鏇存柊锛?| 铏氭嫙鍖?|
-| Windows 10/11 ISO | 铏氭嫙鏈烘搷浣滅郴缁?|
-| .NET 9.0 SDK | 浠呬粠婧愮爜缂栬瘧鏃堕渶瑕?|
-| Python 3.10+ | 浠呭垎鏋愬伐鍏烽渶瑕?|
-| SEB v3.10.1 瀹夎鍖?| 浠庝綘鐨勫鏍¤幏鍙?|
+| VMware Workstation 26H1（或更新） | 虚拟化 |
+| Windows 10/11 ISO | 虚拟机操作系统 |
+| .NET 9.0 SDK | 仅从源码编译时需要 |
+| Python 3.10+ | 仅分析工具需要 |
+| SEB v3.10.1 安装包 | 从你的学校获取 |
 
-## 蹇€熷紑濮?
+## 快速开始
 
-### 1. 瀹夎 VMware
+### 1. 安装 VMware
 
-1. 涓嬭浇骞跺畨瑁?[VMware Workstation Player](https://www.vmware.com/go/getplayer-win)锛堝厤璐癸級
-2. 鍒涘缓鏂扮殑 Windows 10/11 铏氭嫙鏈?
-3. 鍦ㄨ櫄鎷熸満涓畨瑁?Windows
+1. 下载并安装 [VMware Workstation Player](https://www.vmware.com/go/getplayer-win)（免费）
+2. 创建新的 Windows 10/11 虚拟机
+3. 在虚拟机中安装 Windows
 
-### 2. 閰嶇疆铏氭嫙鏈猴紙瀹夸富鏈烘搷浣滐級
+### 2. 配置虚拟机（宿主机操作）
 
-鍦?VMware 瀹屽叏鍏抽棴鍚庯紝缂栬緫铏氭嫙鏈虹殑 `.vmx` 鏂囦欢锛?
+在 VMware 完全关闭后，编辑虚拟机的 `.vmx` 文件：
 
 ```
 firmware = "bios"
@@ -116,64 +116,64 @@ hypervisor.cpuid.v0 = "FALSE"
 monitor.virtual_exec = "hardware"
 ```
 
-鍏抽敭璁剧疆璇存槑锛?
-- `firmware = "bios"` 鈥?EFI 妯″紡浼氬鑷?ISO 鍚姩澶辫触
-- `smbios.reflecthost = "TRUE"` 鈥?闅愯棌 VMware BIOS 淇℃伅
+关键设置说明：
+- `firmware = "bios"` — EFI 模式会导致 ISO 启动失败
+- `smbios.reflecthost = "TRUE"` — 隐藏 VMware BIOS 信息
 
-### 3. 瀹夎 VMware Tools锛堣櫄鎷熸満鍐呮搷浣滐級
+### 3. 安装 VMware Tools（虚拟机内操作）
 
-VMware 鑿滃崟锛?*铏氭嫙鏈?鈫?瀹夎 VMware Tools** 鈫?鍦ㄨ櫄鎷熸満涓繍琛?`setup64.exe` 鈫?閲嶅惎銆?
+VMware 菜单：**虚拟机 → 安装 VMware Tools** → 在虚拟机中运行 `setup64.exe` → 重启。
 
-瀹夎鍚庡彲瀹炵幇锛氳嚜鍔ㄩ€傞厤鍒嗚鲸鐜囥€佸壀璐存澘鍏变韩銆佹嫋鎷芥枃浠躲€?
+安装后可实现：自动适配分辨率、剪贴板共享、拖拽文件。
 
-### 4. 瀹夎 SEB 渚濊禆椤癸紙铏氭嫙鏈哄唴鎿嶄綔锛?
+### 4. 安装 SEB 依赖项（虚拟机内操作）
 
-SEB v3.10.1 闇€瑕侊細
-- **.NET Framework 4.8** 鈥?Windows 10 1903+ 閫氬父宸查瑁?
-- **Visual C++ 2015-2022 杩愯搴?* 鈥?浠?[寰蒋瀹樼綉](https://aka.ms/vs/17/release/vc_redist.x64.exe) 涓嬭浇
+SEB v3.10.1 需要：
+- **.NET Framework 4.8** — Windows 10 1903+ 通常已预装
+- **Visual C++ 2015-2022 运行库** — 从 [微软官网](https://aka.ms/vs/17/release/vc_redist.x64.exe) 下载
 
-濡傛灉铏氭嫙鏈洪噷涓嬭浇澶參锛屽彲浠ュ湪瀹夸富鏈轰笂涓嬭浇鍚庨€氳繃鍏变韩鏂囦欢澶逛紶鍏ワ細
-1. 鍦ㄥ涓绘満涓婁笅杞?`vc_redist.x64.exe`
-2. 鏀惧埌涓庤櫄鎷熸満鍏变韩鐨勬枃浠跺す涓?
-3. 鍦ㄨ櫄鎷熸満閲岃繍琛?
+如果虚拟机里下载太慢，可以在宿主机上下载后通过共享文件夹传入：
+1. 在宿主机上下载 `vc_redist.x64.exe`
+2. 放到与虚拟机共享的文件夹中
+3. 在虚拟机里运行
 
-### 5. 瀹夎 SEB锛堣櫄鎷熸満鍐呮搷浣滐級
+### 5. 安装 SEB（虚拟机内操作）
 
-灏?SEB 瀹夎鍖呭鍒跺埌铏氭嫙鏈轰腑锛屾甯稿畨瑁呫€?
+将 SEB 安装包复制到虚拟机中，正常安装。
 
-### 6. 鎵撹ˉ涓?
+### 6. 打补丁
 
-**鏂瑰紡 A锛氫娇鐢ㄤ竴閿ˉ涓佽剼鏈紙鎺ㄨ崘锛?*
+**方式 A：使用一键补丁脚本（推荐）**
 
-灏?`scripts/` 鍜?`bin/` 鐩綍澶嶅埗鍒拌櫄鎷熸満涓紙閫氳繃鍏变韩鏂囦欢澶癸級锛岀劧鍚庡湪**绠＄悊鍛?CMD** 涓繍琛屼竴閿ˉ涓佽剼鏈細
+将 `scripts/` 和 `bin/` 目录复制到虚拟机中（通过共享文件夹），然后在**管理员 CMD** 中运行一键补丁脚本：
 
 ```cmd
-cd <scripts 璺緞>
+cd <scripts 路径>
 patch_all.cmd
 ```
 
-杩欎釜鑴氭湰浼氳嚜鍔ㄦ墽琛屼互涓嬫搷浣滐細
-1. 缁撴潫 SEB 鐩稿叧杩涚▼鍜屾湇鍔?
-2. 杩愯 `seb-patcher` 绂佺敤铏氭嫙鏈烘娴?
-3. 杩愯 `display-patcher` 绂佺敤鏄剧ず鍣ㄩ獙璇?
-4. 灏嗗弻閲嶈ˉ涓佸悗鐨?DLL 閮ㄧ讲鍒?SEB 瀹夎鐩綍
+这个脚本会自动执行以下操作：
+1. 结束 SEB 相关进程和服务
+2. 运行 `seb-patcher` 禁用虚拟机检测
+3. 运行 `display-patcher` 禁用显示器验证
+4. 将双重补丁后的 DLL 部署到 SEB 安装目录
 
-**鏂瑰紡 B锛氭墜鍔ㄧ紪璇戜笌鎵撹ˉ涓?*
+**方式 B：手动编译与打补丁**
 
 ```bash
-# 缂栬瘧 seb-patcher
+# 编译 seb-patcher
 cd seb-patcher
 dotnet publish -c Release -r win-x64 --self-contained true
 
-# 缂栬瘧 display-patcher
+# 编译 display-patcher
 cd ../display-patcher
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-缂栬瘧瀹屾垚鍚庯紝闇€瑕佹墜鍔ㄦ墽琛岃櫄鎷熸満妫€娴嬭ˉ涓侊紝鐒跺悗鍐嶆墽琛屾樉绀哄櫒楠岃瘉琛ヤ竵锛屾渶鍚庡皢杈撳嚭鐨?DLL 澶嶅埗鍒?SEB 鏂囦欢澶逛腑銆?
+编译完成后，需要手动执行虚拟机检测补丁，然后再执行显示器验证补丁，最后将输出的 DLL 复制到 SEB 文件夹中。
 
-### 7. 閰嶇疆 VMware 鍙嶆娴嬶紙瀹夸富鏈烘搷浣滐級
+### 7. 配置 VMware 反检测（宿主机操作）
 
-鍦?`.vmx` 鏂囦欢涓坊鍔狅細
+在 `.vmx` 文件中添加：
 
 ```
 smbios.reflecthost = "TRUE"
@@ -185,176 +185,176 @@ isolation.tools.paste.disable = "TRUE"
 monitor.virtual_exec = "hardware"
 ```
 
-### 8. 娴嬭瘯 SEB
+### 8. 测试 SEB
 
-1. 鍦ㄨ櫄鎷熸満涓墦寮€ SEB
-2. 涓嶅啀妫€娴嬪埌铏氭嫙鏈猴紝涔熶笉浼氭姤鏄剧ず鍣ㄩ敊璇?
-3. 纭鍏ㄥ睆妯″紡姝ｅ父宸ヤ綔
+1. 在虚拟机中打开 SEB
+2. 不再检测到虚拟机，也不会报显示器错误
+3. 确认全屏模式正常工作
 
-### 9. 鑰冭瘯褰撳ぉ
+### 9. 考试当天
 
-1. 鎵撳紑 VMware 鈫?鍚姩铏氭嫙鏈?鈫?鍏ㄥ睆锛坄Ctrl+Alt+Enter`锛?
-2. 鎵撳紑 SEB 鈫?杩涘叆鑰冭瘯椤甸潰
-3. 瀹夸富鏈哄畬鍏ㄨ嚜鐢憋紝鍙互鏌ヨ祫鏂?
+1. 打开 VMware → 启动虚拟机 → 全屏（`Ctrl+Alt+Enter`）
+2. 打开 SEB → 进入考试页面
+3. 宿主机完全自由，可以查资料
 
-**鍒囨崲蹇嵎閿細**
+**切换快捷键：**
 
-| 鎿嶄綔 | 蹇嵎閿?|
+| 操作 | 快捷键 |
 |---|---|
-| 杩涘叆鍏ㄥ睆 | `Ctrl+Alt+Enter` |
-| 閫€鍑哄叏灞?| `Ctrl+Alt+Enter`锛堝啀娆℃寜涓嬶級 |
-| 鍒囨崲鍒板涓绘満 | `Ctrl+Alt+Enter` 閫€鍑哄叏灞?鈫?鐐瑰嚮瀹夸富鏈轰换鍔℃爮 |
+| 进入全屏 | `Ctrl+Alt+Enter` |
+| 退出全屏 | `Ctrl+Alt+Enter`（再次按下） |
+| 切换到宿主机 | `Ctrl+Alt+Enter` 退出全屏 → 点击宿主机任务栏 |
 
-## 椤圭洰缁撴瀯
+## 项目结构
 
 ```
 SafeExamBrowser_bypass/
-鈹溾攢鈹€ README.md                      # 鑻辨枃鏂囨。
-鈹溾攢鈹€ README_zh.md                   # 涓枃鏂囨。
-鈹溾攢鈹€ .gitignore
+├── README.md                      # 英文文档
+├── README_zh.md                   # 中文文档
+├── .gitignore
 ├── CLAUDE.md                        # AI 行为契约，指导 AI 助手正确处理安全研究上下文
-鈹溾攢鈹€ requirements.txt               # Python 渚濊禆
-鈹?
-鈹溾攢鈹€ tools/                         # Python 鍒嗘瀽宸ュ叿
-鈹?  鈹溾攢鈹€ main.py                    # CLI 鍏ュ彛
-鈹?  鈹溾攢鈹€ utils.py                   # 鍏变韩宸ュ叿鍑芥暟
-鈹?  鈹溾攢鈹€ config_analyzer.py         # .seb 閰嶇疆鏂囦欢瑙ｅ瘑/瑙ｆ瀽
-鈹?  鈹溾攢鈹€ env_detector.py            # 铏氭嫙鏈?杩滅▼妗岄潰/鐩戞帶妫€娴?
-鈹?  鈹溾攢鈹€ process_monitor.py         # SEB 杩涚▼鍒嗘瀽
-鈹?  鈹溾攢鈹€ kbypass.py                 # 閿洏/杈撳叆闄愬埗鍒嗘瀽
-鈹?  鈹溾攢鈹€ dll_patcher.py             # 浠?nxvvvv 浠撳簱涓嬭浇棰勮ˉ涓?DLL
-鈹?  鈹溾攢鈹€ log_cleaner.py             # 娓呯悊 SEB 鏃ュ織锛堝幓闄よ櫄鎷熸満鐥曡抗锛?
-鈹?  鈹斺攢鈹€ vmx_helper.py              # VMware VMX 閰嶇疆杈呭姪宸ュ叿
-鈹?
-鈹溾攢鈹€ seb-patcher/                   # 鍩轰簬 dnlib 鐨?IL 琛ヤ竵锛堣櫄鎷熸満妫€娴嬶級
-鈹?  鈹溾攢鈹€ seb-patcher.csproj
-鈹?  鈹斺攢鈹€ Program.cs
-鈹?
-鈹溾攢鈹€ display-patcher/               # 鍩轰簬 Mono.Cecil 鐨?IL 琛ヤ竵锛堟樉绀哄櫒楠岃瘉锛?
-鈹?  鈹溾攢鈹€ DisplayPatcher.csproj
-鈹?  鈹斺攢鈹€ Program.cs
-鈹?
-鈹溾攢鈹€ bin/final/                     # 棰勭紪璇戠殑鏄剧ず鍣ㄨˉ涓佸伐鍏凤紙鑷寘鍚級
-鈹?  鈹斺攢鈹€ DisplayPatcher.exe         # 寮€绠卞嵆鐢紝鏃犻渶 .NET SDK
-鈹?
-鈹溾攢鈹€ scripts/                       # 杈呭姪鑴氭湰
-鈹?  鈹溾攢鈹€ force_replace.cmd          # 寮哄埗鏇挎崲 SEB 鐩綍涓殑 DLL
-鈹?  鈹溾攢鈹€ check_dll.cmd              # 璇婃柇锛氭鏌ヨˉ涓佹槸鍚︽垚鍔?
-鈹?  鈹溾攢鈹€ fix_display.cmd            # 澶囬€?DLL 鏇挎崲鑴氭湰
-鈹?  鈹溾攢鈹€ install_vcpp.ps1           # 鍦ㄨ櫄鎷熸満涓畨瑁?VC++ 杩愯搴?
-鈹?  鈹溾攢鈹€ copy_vcpp.ps1              # 浠庡涓绘満鎻愬彇 VC++ DLL
-鈹?  鈹斺攢鈹€ read_logs.ps1              # 蹇€熸煡鐪嬫棩蹇?
-鈹?
-鈹斺攢鈹€ bypass/                        # 杩愯鏃剁粫杩囨ā鍧楋紙瀹為獙鎬э級
-    鈹溾攢鈹€ hook_bypass.py             # 閿洏閽╁瓙缁曡繃锛? 绉嶆柟娉曪級
-    鈹溾攢鈹€ window_bypass.py           # 绐楀彛鎿嶆帶锛堢缉鏀俱€佹渶灏忓寲銆侀殣钘忥級
-    鈹斺攢鈹€ clipboard_bypass.py        # 鍓创鏉胯闂仮澶?
+├── requirements.txt               # Python 依赖
+│
+├── tools/                         # Python 分析工具
+│   ├── main.py                    # CLI 入口
+│   ├── utils.py                   # 共享工具函数
+│   ├── config_analyzer.py         # .seb 配置文件解密/解析
+│   ├── env_detector.py            # 虚拟机/远程桌面/监控检测
+│   ├── process_monitor.py         # SEB 进程分析
+│   ├── kbypass.py                 # 键盘/输入限制分析
+│   ├── dll_patcher.py             # 从 nxvvvv 仓库下载预补丁 DLL
+│   ├── log_cleaner.py             # 清理 SEB 日志（去除虚拟机痕迹）
+│   └── vmx_helper.py              # VMware VMX 配置辅助工具
+│
+├── seb-patcher/                   # 基于 dnlib 的 IL 补丁（虚拟机检测）
+│   ├── seb-patcher.csproj
+│   └── Program.cs
+│
+├── display-patcher/               # 基于 Mono.Cecil 的 IL 补丁（显示器验证）
+│   ├── DisplayPatcher.csproj
+│   └── Program.cs
+│
+├── bin/final/                     # 预编译的显示器补丁工具（自包含）
+│   └── DisplayPatcher.exe         # 开箱即用，无需 .NET SDK
+│
+├── scripts/                       # 辅助脚本
+│   ├── force_replace.cmd          # 强制替换 SEB 目录中的 DLL
+│   ├── check_dll.cmd              # 诊断：检查补丁是否成功
+│   ├── fix_display.cmd            # 备选 DLL 替换脚本
+│   ├── install_vcpp.ps1           # 在虚拟机中安装 VC++ 运行库
+│   ├── copy_vcpp.ps1              # 从宿主机提取 VC++ DLL
+│   └── read_logs.ps1              # 快速查看日志
+│
+└── bypass/                        # 运行时绕过模块（实验性）
+    ├── hook_bypass.py             # 键盘钩子绕过（5 种方法）
+    ├── window_bypass.py           # 窗口操控（缩放、最小化、隐藏）
+    └── clipboard_bypass.py        # 剪贴板访问恢复
 ```
 
-## Python 鍒嗘瀽宸ュ叿鐢ㄦ硶
+## Python 分析工具用法
 
 ```bash
 pip install -r requirements.txt
 
-python tools/main.py scan                 # 瀹屾暣鐜鎵弿
-python tools/main.py config -f exam.seb   # 鍒嗘瀽 .seb 閰嶇疆鏂囦欢
-python tools/main.py env                  # 浠呯幆澧冩娴?
-python tools/main.py monitor              # SEB 杩涚▼鐩戞帶
-python tools/main.py keys                 # 閿洏/杈撳叆鍒嗘瀽
-python tools/main.py patch                # 涓嬭浇骞跺簲鐢?DLL 琛ヤ竵
-python tools/main.py patch --check        # 妫€鏌ヨˉ涓佺姸鎬?
-python tools/main.py patch --restore      # 鎭㈠鍘熷鏂囦欢
-python tools/main.py vmx                  # 妫€鏌?VMware 鍙嶆娴嬮厤缃?
-python tools/main.py vmx --apply          # 搴旂敤鍙嶆娴嬭缃?
-python tools/main.py logs --scan          # 鎵弿 SEB 鏃ュ織涓殑铏氭嫙鏈虹棔杩?
-python tools/main.py logs                 # 娓呯悊 SEB 鏃ュ織
+python tools/main.py scan                 # 完整环境扫描
+python tools/main.py config -f exam.seb   # 分析 .seb 配置文件
+python tools/main.py env                  # 仅环境检测
+python tools/main.py monitor              # SEB 进程监控
+python tools/main.py keys                 # 键盘/输入分析
+python tools/main.py patch                # 下载并应用 DLL 补丁
+python tools/main.py patch --check        # 检查补丁状态
+python tools/main.py patch --restore      # 恢复原始文件
+python tools/main.py vmx                  # 检查 VMware 反检测配置
+python tools/main.py vmx --apply          # 应用反检测设置
+python tools/main.py logs --scan          # 扫描 SEB 日志中的虚拟机痕迹
+python tools/main.py logs                 # 清理 SEB 日志
 ```
 
-## 甯歌闂鎺掓煡
+## 常见问题排查
 
-杩欎簺闂鎴戜滑寮€鍙戣繃绋嬩腑鍏ㄩ儴韪╄繃浜嗕竴閬嶏紝鍚稿彇鎴戜滑鐨勬暀璁惂銆?
+这些问题我们开发过程中全部踩过了一遍，吸取我们的教训吧。
 
-### VMware 鏃犳硶浠?ISO 鍚姩
+### VMware 无法从 ISO 启动
 
-**鐥囩姸锛?* 鏄剧ず "EFI Network... Time out" 鎴栧弽澶嶉噸鍚€?
+**症状：** 显示 "EFI Network... Time out" 或反复重启。
 
-**鍘熷洜锛?* VMware 榛樿浣跨敤 EFI 鍥轰欢锛屽鍏夐┍鍚姩鏀寔涓嶅ソ銆?
+**原因：** VMware 默认使用 EFI 固件，对光驱启动支持不好。
 
-**淇锛?* 鍦?`.vmx` 鏂囦欢涓缃?`firmware = "bios"`銆傚繀椤诲湪 VMware 瀹屽叏鍏抽棴鍚庢墠鑳界紪杈戙€傚鏋?閫€鍑?Workstation"閫夐」鏄伆鑹茬殑锛岀敤浠诲姟绠＄悊鍣ㄦ潃鎺夋墍鏈?VMware 杩涚▼銆?
+**修复：** 在 `.vmx` 文件中设置 `firmware = "bios"`。必须在 VMware 完全关闭后才能编辑。如果"退出 Workstation"选项是灰色的，用任务管理器杀掉所有 VMware 进程。
 
-### 淇敼鍥轰欢鍚庢寕璧锋枃浠跺啿绐?
+### 修改固件后挂起文件冲突
 
-**鐥囩姸锛?* "An error occurred while restoring the virtual machine state."
+**症状：** "An error occurred while restoring the virtual machine state."
 
-**鍘熷洜锛?* 浠?EFI 鍒囨崲鍒?BIOS 浼氫娇鎸傝捣鏂囦欢锛坄.vmss`锛夊け鏁堛€?
+**原因：** 从 EFI 切换到 BIOS 会使挂起文件（`.vmss`）失效。
 
-**淇锛?* 鍒犻櫎铏氭嫙鏈虹洰褰曚腑鐨?`.vmss` 鍜?`.vmsd` 鏂囦欢銆?
+**修复：** 删除虚拟机目录中的 `.vmss` 和 `.vmsd` 文件。
 
-### 缂栬緫 .vmx 鍚庤櫄鎷熸満鎶ユ崯鍧?
+### 编辑 .vmx 后虚拟机报损坏
 
-**鐥囩姸锛?* 缂栬緫 `.vmx` 鏂囦欢鍚庢墦寮€铏氭嫙鏈猴紝VMware 鎶ュ憡铏氭嫙鏈烘崯鍧忥紝鏃犳硶鎵撳紑銆傚垹闄ゅ垰娣诲姞鐨勯厤缃鍚庢仮澶嶆甯搞€?
+**症状：** 编辑 `.vmx` 文件后打开虚拟机，VMware 报告虚拟机损坏，无法打开。删除刚添加的配置行后恢复正常。
 
-**鍘熷洜锛?* 鏈€甯歌鐨勫師鍥犳槸鏂囦欢缂栫爜闂銆俉indows 璁颁簨鏈繚瀛樻椂浼氳嚜鍔ㄦ坊鍔?UTF-8 BOM锛堝瓧鑺傞『搴忔爣璁帮級锛孷Mware 鏃犳硶姝ｇ‘瑙ｆ瀽甯?BOM 鐨?`.vmx` 鏂囦欢銆?
+**原因：** 最常见的原因是文件编码问题。Windows 记事本保存时会自动添加 UTF-8 BOM（字节顺序标记），VMware 无法正确解析带 BOM 的 `.vmx` 文件。
 
-**淇锛?*
+**修复：**
 
-1. **浣跨敤姝ｇ‘鐨勭紪杈戝櫒** 鈥?鐢?[Notepad++](https://notepad-plus-plus.org/) 鎴?VS Code 缂栬緫锛屼笉瑕佺敤 Windows 璁颁簨鏈?
-2. **淇濆瓨涓烘棤 BOM 鐨?UTF-8** 鈥?Notepad++ 涓€夋嫨 `缂栫爜 鈫?浠?UTF-8 缂栫爜`锛堜笉鏄?UTF-8-BOM"锛?
-3. **閬垮厤閲嶅閿?* 鈥?娣诲姞鍓嶅厛 `Ctrl+F` 鎼滅储姣忎釜閿悕锛屽凡瀛樺湪鐨勭洿鎺ヤ慨鏀瑰€硷紝涓嶈閲嶅娣诲姞
-4. **纭繚 VMware 瀹屽叏鍏抽棴** 鈥?铏氭嫙鏈哄繀椤?*鍏虫満**锛堜笉鏄寕璧凤級锛屼笖 VMware Workstation 绋嬪簭宸插畬鍏ㄩ€€鍑?
+1. **使用正确的编辑器** — 用 [Notepad++](https://notepad-plus-plus.org/) 或 VS Code 编辑，不要用 Windows 记事本
+2. **保存为无 BOM 的 UTF-8** — Notepad++ 中选择 `编码 → 以 UTF-8 编码`（不是"UTF-8-BOM"）
+3. **避免重复键** — 添加前先 `Ctrl+F` 搜索每个键名，已存在的直接修改值，不要重复添加
+4. **确保 VMware 完全关闭** — 虚拟机必须**关机**（不是挂起），且 VMware Workstation 程序已完全退出
 
 ```powershell
-# 楠岃瘉鏂囦欢鏄惁鏈?BOM锛堝墠3涓瓧鑺備负 239 187 191 鍗充负鏈?BOM锛?
+# 验证文件是否有 BOM（前3个字节为 239 187 191 即为有 BOM）
 Get-Content "your-vm.vmx" -Encoding Byte | Select-Object -First 3
 ```
 
-> **鐩稿叧 Issue锛?* [#1 - curropt vm](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues/1)
+> **相关 Issue：** [#1 - curropt vm](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues/1)
 
-### SEB 瀹夎鍣ㄥ崱鍦?"Processing: VC++ Runtime"
+### SEB 安装器卡在 "Processing: VC++ Runtime"
 
-**鍘熷洜锛?* VC++ 瀹夎鍣ㄥ湪鍚庡彴闈欓粯杩愯锛屽彲鑳戒細寮瑰嚭 UAC 瀵硅瘽妗嗚鍏朵粬绐楀彛鎸′綇銆?
+**原因：** VC++ 安装器在后台静默运行，可能会弹出 UAC 对话框被其他窗口挡住。
 
-**淇锛?*
-1. 鍦ㄨ櫄鎷熸満涓寜 `Alt+Tab` 妫€鏌ユ槸鍚︽湁闅愯棌绐楀彛
-2. 濡傛灉鍗′綇浜嗭紝鍙栨秷閲嶈瘯
-3. 鎴栬€呭厛浠庡井杞畼缃戞墜鍔ㄥ畨瑁?VC++锛屽啀杩愯 SEB 瀹夎鍣?
+**修复：**
+1. 在虚拟机中按 `Alt+Tab` 检查是否有隐藏窗口
+2. 如果卡住了，取消重试
+3. 或者先从微软官网手动安装 VC++，再运行 SEB 安装器
 
-### 缂哄皯 .NET Framework 4.8
+### 缺少 .NET Framework 4.8
 
-**鐥囩姸锛?* SEB 瀹夎鍣ㄦ樉绀?.NET Framework 4.8 鏈畨瑁呫€?
+**症状：** SEB 安装器显示 .NET Framework 4.8 未安装。
 
-**鍘熷洜锛?* 鍏ㄦ柊鐨?Windows 10 铏氭嫙鏈哄彲鑳芥病鏈夐瑁呫€?
+**原因：** 全新的 Windows 10 虚拟机可能没有预装。
 
-**淇锛?* Windows 10 1903+ 閫氬父鑷甫 .NET 4.8銆傜敤浠ヤ笅鍛戒护妫€鏌ワ細
+**修复：** Windows 10 1903+ 通常自带 .NET 4.8。用以下命令检查：
 ```powershell
 (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full').Release
 ```
-濡傛灉鍊?>= 528040锛岃鏄庡凡瀹夎 .NET 4.8銆?
+如果值 >= 528040，说明已安装 .NET 4.8。
 
-### SEB 妫€娴嬪埌铏氭嫙鏈?
+### SEB 检测到虚拟机
 
-**鐥囩姸锛?* SEB 鏄剧ず"Safe Exam Browser has detected that the application is running on a virtual machine."
+**症状：** SEB 显示"Safe Exam Browser has detected that the application is running on a virtual machine."
 
-**淇锛?* 杩愯 `seb-patcher` 琛ヤ竵 `VirtualMachineDetector` 绫汇€傚弬瑙乕蹇€熷紑濮嬬 6 姝(#6-鎵撹ˉ涓?銆?
+**修复：** 运行 `seb-patcher` 补丁 `VirtualMachineDetector` 类。参见[快速开始第 6 步](#6-打补丁)。
 
-### SEB 鎶ュ憡"妫€娴嬪埌 0 涓樉绀哄櫒"
+### SEB 报告"检测到 0 个显示器"
 
-**鐥囩姸锛?* "涓嶅厑璁镐娇鐢ㄦ椿鍔ㄧ殑鏄剧ず閰嶇疆锛屽厑璁镐娇鐢ㄤ竴涓唴閮ㄦ垨澶栭儴鏄剧ず鍣紝浣嗘娴嬪埌 0 涓閮ㄥ拰 0 涓唴閮ㄦ樉绀哄櫒銆?
+**症状：** "不允许使用活动的显示配置，允许使用一个内部或外部显示器，但检测到 0 个外部和 0 个内部显示器。"
 
-**鍘熷洜锛?* SEB 浣跨敤 WMI锛坄WmiMonitorBasicDisplayParams`锛夋煡璇㈡樉绀哄櫒淇℃伅锛屽湪 VMware 涓棤娉曟甯稿伐浣溿€?
+**原因：** SEB 使用 WMI（`WmiMonitorBasicDisplayParams`）查询显示器信息，在 VMware 中无法正常工作。
 
-**淇锛?* 杩愯 `display-patcher` 琛ヤ竵 `TryLoadDisplays` 鍜?`ValidateConfiguration`銆傚弬瑙乕蹇€熷紑濮嬬 6 姝(#6-鎵撹ˉ涓?銆?
+**修复：** 运行 `display-patcher` 补丁 `TryLoadDisplays` 和 `ValidateConfiguration`。参见[快速开始第 6 步](#6-打补丁)。
 
-### DLL 琚攣瀹?/ 鏃犳硶鏇挎崲
+### DLL 被锁定 / 无法替换
 
-**鐥囩姸锛?* `force_replace.cmd` 鏃犳硶澶嶅埗琛ヤ竵鍚庣殑 DLL銆?
+**症状：** `force_replace.cmd` 无法复制补丁后的 DLL。
 
-**鍘熷洜锛?* 鏈夎繘绋嬮攣瀹氫簡璇ユ枃浠躲€傚父瑙佺姜榄佺ジ棣栵細
-- `SafeExamBrowser.Service.exe`锛圵indows 鏈嶅姟锛屼細鑷姩閲嶅惎锛?
-- `dnSpy.exe`锛堝鏋滀綘鐢ㄥ畠鎵撳紑浜?DLL 杩涜鏌ョ湅锛?
-- `SafeExamBrowser.exe`锛堜富杩涚▼锛?
+**原因：** 有进程锁定了该文件。常见罪魁祸首：
+- `SafeExamBrowser.Service.exe`（Windows 服务，会自动重启）
+- `dnSpy.exe`（如果你用它打开了 DLL 进行查看）
+- `SafeExamBrowser.exe`（主进程）
 
-**淇锛?*
+**修复：**
 ```cmd
 taskkill /f /im SafeExamBrowser* 2>nul
 taskkill /f /im dnSpy* 2>nul
@@ -362,96 +362,96 @@ net stop SafeExamBrowser.Service 2>nul
 timeout /t 3 /nobreak >nul
 ```
 
-鐒跺悗閲嶆柊杩愯鏇挎崲鑴氭湰銆?
+然后重新运行替换脚本。
 
-### PowerShell 鎵ц绛栫暐闃绘鑴氭湰杩愯
+### PowerShell 执行策略阻止脚本运行
 
-**鐥囩姸锛?* "姝ょ郴缁熶笂绂佹杩愯鑴氭湰銆?
+**症状：** "此系统上禁止运行脚本。"
 
-**淇锛?*
+**修复：**
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-鎴栫敤浠ヤ笅鏂瑰紡杩愯鑴氭湰锛?
+或用以下方式运行脚本：
 ```powershell
 powershell -ExecutionPolicy Bypass -File "script.ps1"
 ```
 
-### 鍏变韩鏂囦欢澶硅矾寰勬湁绌烘牸
+### 共享文件夹路径有空格
 
-**鐥囩姸锛?* `\\vmware-host\Shared Folders\seb-bypass\script.cmd` 鎶?鏂囦欢鍚嶃€佺洰褰曞悕鎴栧嵎鏍囪娉曚笉姝ｇ‘"銆?
+**症状：** `\\vmware-host\Shared Folders\seb-bypass\script.cmd` 报"文件名、目录名或卷标语法不正确"。
 
-**鍘熷洜锛?* CMD 鏃犳硶姝ｇ‘澶勭悊 UNC 璺緞涓殑绌烘牸銆?
+**原因：** CMD 无法正确处理 UNC 路径中的空格。
 
-**淇锛?* 鍏堟槧灏勪负鐩樼锛?
+**修复：** 先映射为盘符：
 ```cmd
 net use Z: "\\vmware-host\Shared Folders\seb-bypass"
 Z:\force_replace.cmd
 ```
 
-### VMware Tools 宸插畨瑁呬絾鍒嗚鲸鐜囦笉瀵?
+### VMware Tools 已安装但分辨率不对
 
-**淇锛?* 鍦?VMware 鑿滃崟鏍忥細**鏌ョ湅 鈫?鑷姩璋冩暣澶у皬 鈫?绔嬪嵆閫傚簲瀹㈡埛鏈?*銆傛垨鑰呭湪铏氭嫙鏈烘闈㈠彸閿?鈫?鏄剧ず璁剧疆 鈫?鎵嬪姩璁剧疆涓庡涓绘満涓€鑷寸殑鍒嗚鲸鐜囥€?
+**修复：** 在 VMware 菜单栏：**查看 → 自动调整大小 → 立即适应客户机**。或者在虚拟机桌面右键 → 显示设置 → 手动设置与宿主机一致的分辨率。
 
-### SEB 鏃ュ織鍖呭惈 VMware 鐥曡抗
+### SEB 日志包含 VMware 痕迹
 
-**鐥囩姸锛?* SEB 鏃ュ織涓嚭鐜?"VMware Virtual Platform" 鎴?"integrity compromised"銆?
+**症状：** SEB 日志中出现 "VMware Virtual Platform" 或 "integrity compromised"。
 
-**淇锛?* 鑰冭瘯缁撴潫鍚庝娇鐢ㄦ棩蹇楁竻鐞嗗伐鍏凤細
+**修复：** 考试结束后使用日志清理工具：
 ```bash
-python tools/main.py logs --scan    # 棰勮灏嗚娓呯悊鐨勫唴瀹?
-python tools/main.py logs           # 鎵ц娓呯悊
+python tools/main.py logs --scan    # 预览将要清理的内容
+python tools/main.py logs           # 执行清理
 ```
 
-鎴栨墜鍔ㄥ垹闄わ細`%LOCALAPPDATA%\SafeExamBrowser\Logs\*`
+或手动删除：`%LOCALAPPDATA%\SafeExamBrowser\Logs\*`
 
-## 鎶€鏈粏鑺?
+## 技术细节
 
-### `SafeExamBrowser.Monitoring.dll` 涓殑琛ヤ竵鍐呭
+### `SafeExamBrowser.Monitoring.dll` 中的补丁内容
 
-**VirtualMachineDetector锛坰eb-patcher 淇敼锛夛細**
+**VirtualMachineDetector（seb-patcher 修改）：**
 ```
-IsVirtualMachine()    鈫?return false
-HasNoSystemHardware() 鈫?return false
-HasVirtualDevice()    鈫?return false
-HasVirtualMacAddress()鈫?return false
-IsVirtualCpu()        鈫?return false
-IsVirtualRegistry()   鈫?return false
-IsVirtualSystem()     鈫?return false
-```
-
-**DisplayMonitor锛坉isplay-patcher 淇敼锛夛細**
-```
-TryLoadDisplays()          鈫?杩斿洖 true + 浼€犵殑鍐呴儴鏄剧ず鍣ㄥ垪琛?
-ValidateConfiguration()    鈫?杩斿洖 ValidationResult(IsAllowed=true, InternalDisplays=1)
-ValidateConfiguration 位*   鈫?鎵€鏈夌浉鍏?lambda 閮借繑鍥?true
-WMI 鏄剧ず鍣ㄦ柟娉?             鈫?杩斿洖 true锛堢粫杩?WmiMonitorBasicDisplayParams 鏌ヨ锛?
+IsVirtualMachine()    → return false
+HasNoSystemHardware() → return false
+HasVirtualDevice()    → return false
+HasVirtualMacAddress()→ return false
+IsVirtualCpu()        → return false
+IsVirtualRegistry()   → return false
+IsVirtualSystem()     → return false
 ```
 
-### VideoOutputTechnology 鏋氫妇婧㈠嚭闂
+**DisplayMonitor（display-patcher 修改）：**
+```
+TryLoadDisplays()          → 返回 true + 伪造的内部显示器列表
+ValidateConfiguration()    → 返回 ValidationResult(IsAllowed=true, InternalDisplays=1)
+ValidateConfiguration λ*   → 所有相关 lambda 都返回 true
+WMI 显示器方法              → 返回 true（绕过 WmiMonitorBasicDisplayParams 查询）
+```
 
-`VideoOutputTechnology.Internal` 鏋氫妇鍊兼槸 `0x80000000`锛圛nt32.MinValue锛夈€傚啓鍏?IL 鏃跺繀椤昏繖鏍峰鐞嗭細
+### VideoOutputTechnology 枚举溢出问题
+
+`VideoOutputTechnology.Internal` 枚举值是 `0x80000000`（Int32.MinValue）。写入 IL 时必须这样处理：
 ```csharp
 long rawVal = Convert.ToInt64(internalField.Constant);
 il.Append(il.Create(OpCodes.Ldc_I4, unchecked((int)rawVal)));
 ```
-杩欐槸寮€鍙戣繃绋嬩腑澶氭宕╂簝鐨勭姜榄佺ジ棣栥€?
+这是开发过程中多次崩溃的罪魁祸首。
 
-## 椋庨櫓璇勪及
+## 风险评估
 
-| 椋庨櫓 | 涓ラ噸绋嬪害 | 搴斿鎺柦 |
+| 风险 | 严重程度 | 应对措施 |
 |---|---|---|
-| SEB 鏃ュ織鍖呭惈 `VMware Virtual Platform` | 涓?| 鎻愪氦鍓嶆竻鐞嗘棩蹇?|
-| 鏃ュ織涓嚭鐜?`Application integrity is compromised` | 涓?| SEB 浠嶄細缁х画杩愯锛屽彧鏄鍛?|
-| Moodle 鏈嶅姟鍣ㄦ敹鍒板畬鏁存€ф牎楠屽け璐?| 浣?| 鏈嶅姟鍣ㄥ彧鏀跺埌閫氳繃/澶辫触淇″彿锛屾病鏈夎鎯?|
-| 鑰佸笀瑕佹眰鎻愪氦 SEB 鏃ュ織 | 楂?| 鐢?`log_cleaner.py` 娓呯悊鏃ュ織鎴栫洿鎺ュ垹闄?|
-| SEB 鏇存柊鍚庤ˉ涓佸け鏁?| 涓?| SEB 鏇存柊鍚庨噸鏂拌繍琛岃ˉ涓佸伐鍏?|
-| 鏂扮増 SEB 澧炲己铏氭嫙鏈烘娴?| 涓?| 褰撳墠閫傜敤浜?v3.10.1 |
+| SEB 日志包含 `VMware Virtual Platform` | 中 | 提交前清理日志 |
+| 日志中出现 `Application integrity is compromised` | 中 | SEB 仍会继续运行，只是警告 |
+| Moodle 服务器收到完整性校验失败 | 低 | 服务器只收到通过/失败信号，没有详情 |
+| 老师要求提交 SEB 日志 | 高 | 用 `log_cleaner.py` 清理日志或直接删除 |
+| SEB 更新后补丁失效 | 中 | SEB 更新后重新运行补丁工具 |
+| 新版 SEB 增强虚拟机检测 | 中 | 当前适用于 v3.10.1 |
 
-## 浠庢簮鐮佺紪璇?
+## 从源码编译
 
-### seb-patcher锛堥渶瑕?.NET 9.0 SDK锛?
+### seb-patcher（需要 .NET 9.0 SDK）
 
 ```bash
 cd seb-patcher
@@ -459,7 +459,7 @@ dotnet restore
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
 
-### display-patcher锛堥渶瑕?.NET 9.0 SDK锛?
+### display-patcher（需要 .NET 9.0 SDK）
 
 ```bash
 cd display-patcher
@@ -467,52 +467,52 @@ dotnet restore
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
 
-## 甯歌闂锛團AQ锛?
+## 常见问题（FAQ）
 
-**闂細鑰佸笀/瀛︽牎浼氬彂鐜板悧锛?*
-绛旓細SEB 鏃ュ織涓彲鑳藉寘鍚?`VMware Virtual Platform` 鍜?`integrity compromised` 璀﹀憡銆傚鏋滀綘鐨勫鏍′笉闇€瑕佷綘鎻愪氦 SEB 鏃ュ織锛屾湇鍔″櫒绔彧浼氱湅鍒?鑰冭瘯姝ｅ父瀹屾垚"銆傛彁浜ゆ棩蹇楀墠鍔″繀娓呯悊銆傚弬瑙?[SEB 鏃ュ織鍖呭惈 VMware 鐥曡抗](#seb-鏃ュ織鍖呭惈-vmware-鐥曡抗)銆?
+**问：老师/学校会发现吗？**
+答：SEB 日志中可能包含 `VMware Virtual Platform` 和 `integrity compromised` 警告。如果你的学校不需要你提交 SEB 日志，服务器端只会看到"考试正常完成"。提交日志前务必清理。参见 [SEB 日志包含 VMware 痕迹](#seb-日志包含-vmware-痕迹)。
 
-**闂細鏀寔鍝簺 SEB 鐗堟湰锛?*
-绛旓細鐩墠宸叉祴璇曠‘璁ら€傜敤浜?**SEB v3.10.1.864**銆傚叾浠栫増鏈彲鑳芥湁鏁堜絾涓嶄繚璇併€係EB 鏇存柊鍚庤ˉ涓佸彲鑳藉け鏁?鈥?鏇存柊鍚庨渶閲嶆柊杩愯琛ヤ竵宸ュ叿銆?
+**问：支持哪些 SEB 版本？**
+答：目前已测试确认适用于 **SEB v3.10.1.864**。其他版本可能有效但不保证。SEB 更新后补丁可能失效 — 更新后需重新运行补丁工具。
 
-**闂細鏀寔 macOS 鎴?Linux 鍚楋紵**
-绛旓細涓嶆敮鎸併€傛湰宸ュ叿浠呴€傜敤浜?Windows锛堣ˉ涓佸伐鍏峰拰 VMware 璁剧疆閮芥槸 Windows 鐜锛夈€傝琛ヤ竵鐨?SEB 浜岃繘鍒舵枃浠舵槸 Windows .NET 绋嬪簭闆嗐€?
+**问：支持 macOS 或 Linux 吗？**
+答：不支持。本工具仅适用于 Windows（补丁工具和 VMware 设置都是 Windows 环境）。被补丁的 SEB 二进制文件是 Windows .NET 程序集。
 
-**闂細鍙互鐢?VirtualBox 浠ｆ浛 VMware 鍚楋紵**
-绛旓細鎶€鏈笂鍙互浣嗕笉鎺ㄨ崘銆俈Mware 鐨?`smbios.reflecthost` 鍜岃櫄鎷熸満闅愯棌鍔熻兘鏇存垚鐔燂紝VirtualBox 娉勬紡鏇村铏氭嫙鏈虹壒寰侊紝瀹规槗琚?SEB 妫€娴嬪埌銆?
+**问：可以用 VirtualBox 代替 VMware 吗？**
+答：技术上可以但不推荐。VMware 的 `smbios.reflecthost` 和虚拟机隐藏功能更成熟，VirtualBox 泄漏更多虚拟机特征，容易被 SEB 检测到。
 
-**闂細SEB 瑕佹眰杈撳叆閰嶇疆瀵嗙爜鎬庝箞鍔烇紵**
-绛旓細浣犻渶瑕佷粠瀛︽牎鑾峰彇 `.seb` 閰嶇疆鏂囦欢銆備粠鑰冭瘯椤甸潰涓嬭浇 `.seb` 鏂囦欢锛屽湪铏氭嫙鏈轰腑鍙屽嚮鎵撳紑銆備笉瑕佺洿鎺ユ墦寮€ SEB 绋嬪簭 鈥?閫氳繃 `.seb` 鏂囦欢鍚姩銆?
+**问：SEB 要求输入配置密码怎么办？**
+答：你需要从学校获取 `.seb` 配置文件。从考试页面下载 `.seb` 文件，在虚拟机中双击打开。不要直接打开 SEB 程序 — 通过 `.seb` 文件启动。
 
-**闂細鍑虹幇 "Application integrity is compromised" 鏄笉鏄潖浜嗭紵**
-绛旓細娌℃湁銆傝繖鏄竴涓?*璀﹀憡**锛屼笉鏄樆姝€係EB 浼氭甯哥户缁繍琛屻€傚嚭鐜拌繖涓鍛婃槸鍥犱负琛ヤ竵鍚庣殑 DLL 鍝堝笇鍊间笌鍘熷鍊间笉鍚屻€傚畠鍙褰曞湪鏈湴鏃ュ織涓紝涓嶄細闃绘鑰冭瘯銆?
+**问：出现 "Application integrity is compromised" 是不是坏了？**
+答：没有。这是一个**警告**，不是阻止。SEB 会正常继续运行。出现这个警告是因为补丁后的 DLL 哈希值与原始值不同。它只记录在本地日志中，不会阻止考试。
 
-**闂細Windows 鏇存柊鍚?DLL 琚繕鍘熶簡鎬庝箞鍔烇紵**
-绛旓細閲嶆柊杩愯琛ヤ竵宸ュ叿銆俉indows 鏇存柊鏈夋椂浼氳鐩?`Program Files` 涓殑 DLL銆備繚鐣欒ˉ涓佸悗鐨?DLL 鍜屾浛鎹㈣剼鏈壇鏈互渚垮揩閫熼噸鏂版墦琛ヤ竵銆?
+**问：Windows 更新后 DLL 被还原了怎么办？**
+答：重新运行补丁工具。Windows 更新有时会覆盖 `Program Files` 中的 DLL。保留补丁后的 DLL 和替换脚本副本以便快速重新打补丁。
 
-**闂細鑳藉緱鍒颁竴瀵逛竴鐨勫府鍔╁悧锛?*
-绛旓細鍙互锛侀€氳繃閭欢鑱旂郴 [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com) 鑾峰彇浼樺厛鏀寔锛屾垨鍦?[GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 涓厤璐规彁闂€?
+**问：能得到一对一的帮助吗？**
+答：可以！通过邮件联系 [chuzihang456@gmail.com](mailto:chuzihang456@gmail.com) 获取优先支持，或在 [GitHub Issues](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues) 中免费提问。
 
-鏇村闂璇锋煡鐪嬪畬鏁寸殑 [FAQ 鏂囨。](FAQ.md)銆?
-
----
-
-## 鍏嶈矗澹版槑
-
-鏈伐鍏峰寘**浠呬緵鏁欒偛鍜岀爺绌剁敤閫?*銆傞潰鍚戝畨鍏ㄧ爺绌跺憳銆佹笚閫忔祴璇曚汉鍛樺拰鐮旂┒杞欢淇濇姢鏈哄埗鐨勫鐢熴€?
-
-**浣跨敤鏈蒋浠跺嵆琛ㄧず鎮ㄥ悓鎰忥細**
-- 鎮ㄥ浣跨敤鍚庢灉鎵挎媴鍏ㄩ儴璐ｄ换
-- 鎮ㄥ皢閬靛畧鎵€鏈夐€傜敤娉曞緥鍜屾墍鍦ㄦ満鏋勭殑瀛︽湳鏀跨瓥
-- 浣滆€呬笉瀵逛换浣曡鐢ㄨ涓烘壙鎷呰矗浠?
-
-鎴戜滑涓嶉紦鍔卞鏈笉绔涓恒€傝璐熻矗浠诲湴浣跨敤銆?
+更多问题请查看完整的 [FAQ 文档](FAQ.md)。
 
 ---
 
-## 鑷磋阿
+## 免责声明
 
-- [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass) 鈥?DLL 鏇挎崲鐨勫師濮嬫€濊矾锛岃ˉ涓佺瓥鐣ョ殑鍙傝€?
-- [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) 鈥?SEB 婧愮爜锛堝紑婧愶紝GPL-3.0锛夛紝鐢ㄤ簬鐞嗚В妫€娴嬫満鍒?
-- [dnlib](https://github.com/0xd4d/dnlib) 鈥?.NET 绋嬪簭闆嗘搷浣滃簱
-- [Mono.Cecil](https://github.com/jbevain/cecil) 鈥?IL 鎿嶄綔搴?
+本工具包**仅供教育和研究用途**。面向安全研究员、渗透测试人员和研究软件保护机制的学生。
+
+**使用本软件即表示您同意：**
+- 您对使用后果承担全部责任
+- 您将遵守所有适用法律和所在机构的学术政策
+- 作者不对任何误用行为承担责任
+
+我们不鼓励学术不端行为。请负责任地使用。
+
+---
+
+## 致谢
+
+- [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass) — DLL 替换的原始思路，补丁策略的参考
+- [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) — SEB 源码（开源，GPL-3.0），用于理解检测机制
+- [dnlib](https://github.com/0xd4d/dnlib) — .NET 程序集操作库
+- [Mono.Cecil](https://github.com/jbevain/cecil) — IL 操作库
