@@ -4,7 +4,7 @@ echo   FORCE DLL REPLACE
 echo ========================================
 echo.
 
-set "PATCHED=%~dp0bin\final\SafeExamBrowser.Monitoring.dll"
+set "PATCHED=%~dp0..\bin\final\SafeExamBrowser.Monitoring.dll"
 set "TARGET=C:\Program Files\SafeExamBrowser\Application\SafeExamBrowser.Monitoring.dll"
 
 if not exist "%PATCHED%" (

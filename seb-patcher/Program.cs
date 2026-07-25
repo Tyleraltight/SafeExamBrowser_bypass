@@ -91,13 +91,42 @@ namespace SebPatcher
 
             if (vmDetectorType == null)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("[!] VirtualMachineDetector type not found!");
                 Console.ResetColor();
-                return 1;
+            }
+            else
+            {
+                Console.WriteLine($"[+] Found type: {vmDetectorType.FullName}");
             }
 
-            Console.WriteLine($"[+] Found type: {vmDetectorType.FullName}");
+            // Find RemoteSessionDetector
+            TypeDef remoteSessionType = null;
+            foreach (var type in module.GetTypes())
+            {
+                if (type.FullName == "SafeExamBrowser.Monitoring.RemoteSessionDetector")
+                {
+                    remoteSessionType = type;
+                    break;
+                }
+            }
+
+            if (remoteSessionType != null)
+                Console.WriteLine($"[+] Found type: {remoteSessionType.FullName}");
+
+            // Find IntegrityModule
+            TypeDef integrityModuleType = null;
+            foreach (var type in module.GetTypes())
+            {
+                if (type.FullName == "SafeExamBrowser.Configuration.Integrity.IntegrityModule" || type.Name == "IntegrityModule")
+                {
+                    integrityModuleType = type;
+                    break;
+                }
+            }
+
+            if (integrityModuleType != null)
+                Console.WriteLine($"[+] Found type: {integrityModuleType.FullName}");
 
             // Patch all VM detection methods to return false
             var patchedCount = 0;
@@ -112,15 +141,56 @@ namespace SebPatcher
                 "IsVirtualSystem"
             };
 
-            foreach (var method in vmDetectorType.Methods)
+            // Patch all RemoteSession methods to return false as well
+            var remoteSessionMethods = new[]
             {
-                if (Array.Exists(methodsToPatch, m => m == method.Name) && method.HasBody)
+                "IsRemoteSession",
+                "IsWindowsRemoteDesktopSession",
+                "IsWtsSession"
+            };
+
+            if (vmDetectorType != null)
+            {
+                foreach (var method in vmDetectorType.Methods)
                 {
-                    PatchReturnFalse(method);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"  [+] Patched: {method.Name}");
-                    Console.ResetColor();
-                    patchedCount++;
+                    if (Array.Exists(methodsToPatch, m => m == method.Name) && method.HasBody)
+                    {
+                        PatchReturnFalse(method);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"  [+] Patched: {method.Name}");
+                        Console.ResetColor();
+                        patchedCount++;
+                    }
+                }
+            }
+
+            if (remoteSessionType != null)
+            {
+                foreach (var method in remoteSessionType.Methods)
+                {
+                    if (Array.Exists(remoteSessionMethods, m => m == method.Name) && method.HasBody)
+                    {
+                        PatchReturnFalse(method);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"  [+] Patched (Remote): {method.Name}");
+                        Console.ResetColor();
+                        patchedCount++;
+                    }
+                }
+            }
+
+            if (integrityModuleType != null)
+            {
+                foreach (var method in integrityModuleType.Methods)
+                {
+                    if (method.Name.Contains("VerifyCodeIntegrity") && method.HasBody && method.ReturnType.FullName == "System.Boolean")
+                    {
+                        PatchReturnTrue(method);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"  [+] Patched (Integrity): {method.Name} -> returns true");
+                        Console.ResetColor();
+                        patchedCount++;
+                    }
                 }
             }
 
@@ -184,6 +254,18 @@ namespace SebPatcher
 
             // Replace with: ldc.i4.0; ret  (i.e., return false)
             method.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+            method.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        }
+
+        static void PatchReturnTrue(MethodDef method)
+        {
+            method.Body.Instructions.Clear();
+            method.Body.ExceptionHandlers.Clear();
+            method.Body.Variables.Clear();
+            method.Body.InitLocals = false;
+
+            // Replace with: ldc.i4.1; ret  (i.e., return true)
+            method.Body.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
             method.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
         }
 

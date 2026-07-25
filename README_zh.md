@@ -3,7 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
-[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
+[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
 **[English](README.md) | 中文**
 
@@ -143,32 +143,33 @@ SEB v3.10.1 需要：
 
 ### 6. 打补丁
 
-**方式 A：使用预编译文件（推荐）**
+**方式 A：使用一键补丁脚本（推荐）**
 
-将 `bin/final/` 目录复制到虚拟机中（通过共享文件夹），然后在**管理员 CMD** 中运行：
-
-```cmd
-cd <bin\final 路径>
-DisplayPatcher.exe
-```
-
-然后运行替换脚本（管理员 CMD）：
+将 `scripts/` 和 `bin/` 目录复制到虚拟机中（通过共享文件夹），然后在**管理员 CMD** 中运行一键补丁脚本：
 
 ```cmd
 cd <scripts 路径>
-force_replace.cmd
+patch_all.cmd
 ```
 
-如果你的路径不同，需要修改 `force_replace.cmd` 中的路径。
+这个脚本会自动执行以下操作：
+1. 结束 SEB 相关进程和服务
+2. 运行 `seb-patcher` 禁用虚拟机检测
+3. 运行 `display-patcher` 禁用显示器验证
+4. 将双重补丁后的 DLL 部署到 SEB 安装目录
 
-**方式 B：从源码编译**
+**方式 B：手动编译与打补丁**
 
 ```bash
-cd display-patcher
+# 编译 seb-patcher
+cd seb-patcher
+dotnet publish -c Release -r win-x64 --self-contained true
+
+# 编译 display-patcher
+cd ../display-patcher
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-
-输出在 `display-patcher/bin/Release/net9.0/win-x64/publish/`。
+编译完成后，需要手动执行虚拟机检测补丁，然后再执行显示器验证补丁，最后将输出的 DLL 复制到 SEB 文件夹中。
 
 ### 7. 配置 VMware 反检测（宿主机操作）
 

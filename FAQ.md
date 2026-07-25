@@ -14,7 +14,7 @@ Yes. We've tested it on SEB v3.10.1.864 with Moodle integration. The patcher dis
 
 ### Which SEB versions are supported?
 
-Currently **SEB v3.10.1.864**. Other v3.x versions may work but are not tested. SEB v3.6.x requires a different patcher (see [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass)).
+Currently **SEB v3.10.1 and v3.10.2**. Other v3.x versions may work but are not tested. SEB v3.6.x requires a different patcher (see [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass)).
 
 ### Does this work on macOS or Linux?
 

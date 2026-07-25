@@ -14,7 +14,7 @@
 
 ### 支持哪些 SEB 版本？
 
-目前确认适用于 **SEB v3.10.1.864**。其他 v3.x 版本可能有效但未经测试。SEB v3.6.x 需要不同的补丁工具（参见 [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass)）。
+目前确认适用于 **SEB v3.10.1 和 v3.10.2**。其他 v3.x 版本可能有效但未经测试。SEB v3.6.x 需要不同的补丁工具（参见 [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass)）。
 
 ### 支持 macOS 或 Linux 吗？
 

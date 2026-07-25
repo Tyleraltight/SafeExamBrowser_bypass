@@ -3,7 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
-[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
+[![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
 **English | [中文](README_zh.md)**
 
@@ -144,32 +144,33 @@ Copy the SEB installer into the VM and run it normally.
 
 ### 6. Patch the DLL
 
-**Option A: Use pre-compiled binaries (recommended)**
+**Option A: Use the unified patch script (recommended)**
 
-Copy the `bin/final/` directory into the VM (via shared folder), then run in an **Admin CMD**:
-
-```cmd
-cd <path-to-bin\final>
-DisplayPatcher.exe
-```
-
-Then run the replacement script (Admin CMD):
+Copy the `scripts/` and `bin/` directories into the VM (via shared folder), then run the unified patch script in an **Admin CMD**:
 
 ```cmd
 cd <path-to-scripts>
-force_replace.cmd
+patch_all.cmd
 ```
 
-The `force_replace.cmd` script needs to be adjusted if your paths differ. Edit it to point to the correct location of the patched DLL.
+This script will automatically:
+1. Kill SEB processes and services
+2. Run `seb-patcher` to disable VM detection
+3. Run `display-patcher` to disable display validation
+4. Deploy the double-patched DLL to the SEB installation directory
 
-**Option B: Build from source**
+**Option B: Manual Build & Patch from source**
 
 ```bash
-cd display-patcher
+# Build seb-patcher
+cd seb-patcher
+dotnet publish -c Release -r win-x64 --self-contained true
+
+# Build display-patcher
+cd ../display-patcher
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-
-Output will be in `display-patcher/bin/Release/net9.0/win-x64/publish/`.
+After building both, follow the manual steps to patch VM detection first, then display validation, and copy the final output DLL to the SEB folder.
 
 ### 7. Configure VMware Anti-Detection (Host Side)
 

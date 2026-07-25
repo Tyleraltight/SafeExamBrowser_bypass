@@ -176,47 +176,28 @@ def patch_seb(install_dir=None, download_dir=None, verbose=True):
     log = print if verbose else lambda *a, **k: None
     result = {"success": False, "steps": {}}
 
-    if not install_dir:
-        install_dir = find_seb_install_dir()
-    if not install_dir:
-        log("[!] SEB not found! Specify with --install-dir")
-        return result
+    log("\n[!] WARNING: The old dll_patcher downloaded pre-patched files for SEB v3.6.x.")
+    log("[!] We now use local C# patchers for SEB v3.10.x.")
+    log("[*] Running local patch_all.cmd...")
 
-    log(f"[+] SEB found at: {install_dir}")
-    result["install_dir"] = install_dir
-
-    try:
-        backup_dir = backup_originals(install_dir, verbose)
-        result["backup_dir"] = backup_dir
-    except Exception as e:
-        log(f"[!] Backup failed: {e}")
-        return result
-
-    if not download_dir:
-        download_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "patched_files")
-
-    try:
-        dl = download_patched_files(download_dir, verbose)
-        if not all(r["success"] for r in dl.values()):
-            log("\n[!] Some downloads failed.")
-            return result
-    except Exception as e:
-        log(f"[!] Download failed: {e}")
+    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts", "patch_all.cmd")
+    
+    if not os.path.isfile(script_path):
+        log(f"[!] Cannot find unified patch script at: {script_path}")
         return result
 
     try:
-        if apply_patch(install_dir, download_dir, verbose):
-            log("\n" + "=" * 50)
-            log("[+] PATCH APPLIED SUCCESSFULLY!")
-            log("=" * 50)
-            log("\nSEB will now run without VM detection.")
-            log("IMPORTANT: Edit logs if your proctor asks!")
-            log(f"Backup: {backup_dir}")
+        import subprocess
+        log(f"[*] Executing: {script_path}")
+        # Run as admin request will be handled by the cmd script itself
+        proc = subprocess.run([script_path], shell=True)
+        if proc.returncode == 0:
             result["success"] = True
+            log("\n[+] Local patchers executed successfully.")
         else:
-            log("\n[!] Partially applied. Run as Administrator.")
+            log(f"\n[!] Patch script returned error code: {proc.returncode}")
     except Exception as e:
-        log(f"[!] Failed: {e}")
+        log(f"[!] Failed to execute patch script: {e}")
 
     return result
 
