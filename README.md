@@ -1,11 +1,11 @@
-# Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
+﻿# Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
 
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/Tyleraltight/SafeExamBrowser_bypass)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/issues)
 [![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
-**English | [中文](README_zh.md)**
+**English | [涓枃](README_zh.md)**
 
 ![SEB Running in VMware](VM_SEB_running.png)
 
@@ -29,31 +29,31 @@ Need help setting up? Stuck on a step? Want the pre-built one-click package?
 
 ```
 Host Machine (your real computer)
-│
-│  Chrome / Edge / any app  ← completely free, no restrictions
-│
-│  ┌─────────────────────────────────┐
-│  │  VMware Workstation (window)     │
-│  │  ┌─────────────────────────────┐│
-│  │  │  Windows 10 VM              ││
-│  │  │  ┌─────────────────────┐   ││
-│  │  │  │  SEB (patched)       │   ││
-│  │  │  │  Thinks it's on a    │   ││
-│  │  │  │  real machine        │   ││
-│  │  │  └─────────────────────┘   ││
-│  │  └─────────────────────────────┘│
-│  └─────────────────────────────────┘
+鈹?
+鈹? Chrome / Edge / any app  鈫?completely free, no restrictions
+鈹?
+鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+鈹? 鈹? VMware Workstation (window)     鈹?
+鈹? 鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹愨攤
+鈹? 鈹? 鈹? Windows 10 VM              鈹傗攤
+鈹? 鈹? 鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鈹傗攤
+鈹? 鈹? 鈹? 鈹? SEB (patched)       鈹?  鈹傗攤
+鈹? 鈹? 鈹? 鈹? Thinks it's on a    鈹?  鈹傗攤
+鈹? 鈹? 鈹? 鈹? real machine        鈹?  鈹傗攤
+鈹? 鈹? 鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鈹傗攤
+鈹? 鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹樷攤
+鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
 ```
 
 **Two patchers do the heavy lifting:**
 
-1. **`seb-patcher`** (dnlib) — Patches `VirtualMachineDetector` class. Makes all 7 VM detection methods return `false`.
+1. **`seb-patcher`** (dnlib) 鈥?Patches `VirtualMachineDetector` class. Makes all 7 VM detection methods return `false`.
 
-2. **`display-patcher`** (Mono.Cecil) — Patches `DisplayMonitor.TryLoadDisplays()` to return a fake internal display, and `ValidateConfiguration` to return `IsAllowed=true`. This solves the "0 displays detected" error that occurs in VMware.
+2. **`display-patcher`** (Mono.Cecil) 鈥?Patches `DisplayMonitor.TryLoadDisplays()` to return a fake internal display, and `ValidateConfiguration` to return `IsAllowed=true`. This solves the "0 displays detected" error that occurs in VMware.
 
 ## Screenshots
 
-**Successful patch — all 7 VM detection methods disabled:**
+**Successful patch 鈥?all 7 VM detection methods disabled:**
 ```
 [*] Patching VirtualMachineDetector...
     [+] IsVirtualMachine()    -> returns false
@@ -67,7 +67,7 @@ Host Machine (your real computer)
 SUCCESS! 7 method(s) patched.
 ```
 
-**Display patcher — WMI bypass and configuration override:**
+**Display patcher 鈥?WMI bypass and configuration override:**
 ```
 [*] Patching ValidateConfiguration...
     [+] -> returns ValidationResult(IsAllowed=true, Internal=1)
@@ -78,12 +78,12 @@ SUCCESS! 7 method(s) patched.
 SUCCESS! 6 method(s) patched.
 ```
 
-**SEB running in VMware — no VM detection, no display errors:**
+**SEB running in VMware 鈥?no VM detection, no display errors:**
 ```
 Display Monitor: Started!
 Disallowed Displays: none.
 Allowed Displays: 1.
-Application integrity is compromised! (WARNING only — does not block)
+Application integrity is compromised! (WARNING only 鈥?does not block)
 ```
 
 > Want to see more? Check the [Troubleshooting](#troubleshooting) section for real error logs and fixes.
@@ -118,20 +118,20 @@ monitor.virtual_exec = "hardware"
 ```
 
 Key settings:
-- `firmware = "bios"` — EFI mode causes ISO boot failures
-- `smbios.reflecthost = "TRUE"` — Hides VMware BIOS strings
+- `firmware = "bios"` 鈥?EFI mode causes ISO boot failures
+- `smbios.reflecthost = "TRUE"` 鈥?Hides VMware BIOS strings
 
 ### 3. Install VMware Tools (Inside VM)
 
-In VMware menu: **VM → Install VMware Tools** → run `setup64.exe` inside the VM → restart.
+In VMware menu: **VM 鈫?Install VMware Tools** 鈫?run `setup64.exe` inside the VM 鈫?restart.
 
 This enables auto-resolution, clipboard sharing, and drag-and-drop.
 
 ### 4. Install SEB Dependencies (Inside VM)
 
 SEB v3.10.1 requires:
-- **.NET Framework 4.8** — usually pre-installed on Windows 10 1903+
-- **Visual C++ 2015-2022 Redistributable** — download from [Microsoft](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+- **.NET Framework 4.8** 鈥?usually pre-installed on Windows 10 1903+
+- **Visual C++ 2015-2022 Redistributable** 鈥?download from [Microsoft](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
 If downloading inside the VM is too slow, use the host-to-VM approach:
 1. Download `vc_redist.x64.exe` on your host machine
@@ -194,8 +194,8 @@ monitor.virtual_exec = "hardware"
 
 ### 9. Exam Day
 
-1. Open VMware → start VM → fullscreen (`Ctrl+Alt+Enter`)
-2. Open SEB → navigate to exam
+1. Open VMware 鈫?start VM 鈫?fullscreen (`Ctrl+Alt+Enter`)
+2. Open SEB 鈫?navigate to exam
 3. Host machine is completely free for reference materials
 
 **Switching shortcuts:**
@@ -204,50 +204,51 @@ monitor.virtual_exec = "hardware"
 |---|---|
 | Enter fullscreen | `Ctrl+Alt+Enter` |
 | Exit fullscreen | `Ctrl+Alt+Enter` (toggle) |
-| Switch to host | `Ctrl+Alt+Enter` → click host taskbar |
+| Switch to host | `Ctrl+Alt+Enter` 鈫?click host taskbar |
 
 ## Project Structure
 
 ```
 SafeExamBrowser_bypass/
-├── README.md
-├── .gitignore
-├── requirements.txt              # Python dependencies
-│
-├── tools/                        # Python analysis tools
-│   ├── main.py                   # CLI entry point
-│   ├── utils.py                  # Shared utilities
-│   ├── config_analyzer.py        # .seb config file decryptor/parser
-│   ├── env_detector.py           # VM/remote desktop/monitoring detection
-│   ├── process_monitor.py        # SEB process analysis
-│   ├── kbypass.py                # Keyboard/input restriction analysis
-│   ├── dll_patcher.py            # Download pre-patched DLLs from nxvvvv repo
-│   ├── log_cleaner.py            # Sanitize SEB logs (remove VM traces)
-│   └── vmx_helper.py             # VMware VMX configuration helper
-│
-├── seb-patcher/                  # dnlib-based IL patcher (VM detection)
-│   ├── seb-patcher.csproj
-│   └── Program.cs
-│
-├── display-patcher/              # Mono.Cecil IL patcher (display validation)
-│   ├── DisplayPatcher.csproj
-│   └── Program.cs
-│
-├── bin/final/                    # Pre-compiled display patcher (self-contained)
-│   └── DisplayPatcher.exe        # Ready to use, no .NET SDK needed
-│
-├── scripts/                      # Helper scripts
-│   ├── force_replace.cmd         # Force-replace DLL in SEB directory
-│   ├── check_dll.cmd             # Diagnostic: check if patch succeeded
-│   ├── fix_display.cmd           # Alternative DLL replacement script
-│   ├── install_vcpp.ps1          # Install VC++ runtime in VM
-│   ├── copy_vcpp.ps1             # Extract VC++ DLLs from host
-│   └── read_logs.ps1             # Quick log viewer
-│
-└── bypass/                       # Runtime bypass modules (experimental)
-    ├── hook_bypass.py            # Keyboard hook bypass (5 methods)
-    ├── window_bypass.py          # Window manipulation (resize, minimize, hide)
-    └── clipboard_bypass.py       # Clipboard access restoration
+鈹溾攢鈹€ README.md
+鈹溾攢鈹€ .gitignore
+├── CLAUDE.md                        # AI behavior contract for AI assistants
+鈹溾攢鈹€ requirements.txt              # Python dependencies
+鈹?
+鈹溾攢鈹€ tools/                        # Python analysis tools
+鈹?  鈹溾攢鈹€ main.py                   # CLI entry point
+鈹?  鈹溾攢鈹€ utils.py                  # Shared utilities
+鈹?  鈹溾攢鈹€ config_analyzer.py        # .seb config file decryptor/parser
+鈹?  鈹溾攢鈹€ env_detector.py           # VM/remote desktop/monitoring detection
+鈹?  鈹溾攢鈹€ process_monitor.py        # SEB process analysis
+鈹?  鈹溾攢鈹€ kbypass.py                # Keyboard/input restriction analysis
+鈹?  鈹溾攢鈹€ dll_patcher.py            # Download pre-patched DLLs from nxvvvv repo
+鈹?  鈹溾攢鈹€ log_cleaner.py            # Sanitize SEB logs (remove VM traces)
+鈹?  鈹斺攢鈹€ vmx_helper.py             # VMware VMX configuration helper
+鈹?
+鈹溾攢鈹€ seb-patcher/                  # dnlib-based IL patcher (VM detection)
+鈹?  鈹溾攢鈹€ seb-patcher.csproj
+鈹?  鈹斺攢鈹€ Program.cs
+鈹?
+鈹溾攢鈹€ display-patcher/              # Mono.Cecil IL patcher (display validation)
+鈹?  鈹溾攢鈹€ DisplayPatcher.csproj
+鈹?  鈹斺攢鈹€ Program.cs
+鈹?
+鈹溾攢鈹€ bin/final/                    # Pre-compiled display patcher (self-contained)
+鈹?  鈹斺攢鈹€ DisplayPatcher.exe        # Ready to use, no .NET SDK needed
+鈹?
+鈹溾攢鈹€ scripts/                      # Helper scripts
+鈹?  鈹溾攢鈹€ force_replace.cmd         # Force-replace DLL in SEB directory
+鈹?  鈹溾攢鈹€ check_dll.cmd             # Diagnostic: check if patch succeeded
+鈹?  鈹溾攢鈹€ fix_display.cmd           # Alternative DLL replacement script
+鈹?  鈹溾攢鈹€ install_vcpp.ps1          # Install VC++ runtime in VM
+鈹?  鈹溾攢鈹€ copy_vcpp.ps1             # Extract VC++ DLLs from host
+鈹?  鈹斺攢鈹€ read_logs.ps1             # Quick log viewer
+鈹?
+鈹斺攢鈹€ bypass/                       # Runtime bypass modules (experimental)
+    鈹溾攢鈹€ hook_bypass.py            # Keyboard hook bypass (5 methods)
+    鈹溾攢鈹€ window_bypass.py          # Window manipulation (resize, minimize, hide)
+    鈹斺攢鈹€ clipboard_bypass.py       # Clipboard access restoration
 ```
 
 ## Python Analysis Tools Usage
@@ -285,7 +286,7 @@ We hit every single one of these during development. Learn from our pain.
 
 **Symptom:** "An error occurred while restoring the virtual machine state."
 
-**Cause:** Changing EFI → BIOS invalidates the suspend file (`.vmss`).
+**Cause:** Changing EFI 鈫?BIOS invalidates the suspend file (`.vmss`).
 
 **Fix:** Delete the `.vmss` and `.vmsd` files in the VM directory.
 
@@ -297,10 +298,10 @@ We hit every single one of these during development. Learn from our pain.
 
 **Fix:**
 
-1. **Use the right editor** — Use [Notepad++](https://notepad-plus-plus.org/) or VS Code, not Windows Notepad
-2. **Save as UTF-8 without BOM** — In Notepad++, select `Encoding → Encode in UTF-8` (not "UTF-8-BOM")
-3. **Avoid duplicate keys** — Before adding, `Ctrl+F` search for each key name; modify existing values instead of adding duplicates
-4. **Ensure VMware is fully closed** — VM must be **powered off** (not suspended), and VMware Workstation must be completely exited
+1. **Use the right editor** 鈥?Use [Notepad++](https://notepad-plus-plus.org/) or VS Code, not Windows Notepad
+2. **Save as UTF-8 without BOM** 鈥?In Notepad++, select `Encoding 鈫?Encode in UTF-8` (not "UTF-8-BOM")
+3. **Avoid duplicate keys** 鈥?Before adding, `Ctrl+F` search for each key name; modify existing values instead of adding duplicates
+4. **Ensure VMware is fully closed** 鈥?VM must be **powered off** (not suspended), and VMware Workstation must be completely exited
 
 ```powershell
 # Check if file has BOM (first 3 bytes 239 187 191 = BOM present)
@@ -391,7 +392,7 @@ Z:\force_replace.cmd
 
 ### VMware Tools installed but resolution is wrong
 
-**Fix:** In VMware menu: **View → Autosize → Adapt Guest**. Or manually set resolution inside the VM: right-click desktop → Display Settings → match your host screen resolution.
+**Fix:** In VMware menu: **View 鈫?Autosize 鈫?Adapt Guest**. Or manually set resolution inside the VM: right-click desktop 鈫?Display Settings 鈫?match your host screen resolution.
 
 ### SEB logs contain VMware traces
 
@@ -411,21 +412,21 @@ Or manually delete: `%LOCALAPPDATA%\SafeExamBrowser\Logs\*`
 
 **VirtualMachineDetector (by seb-patcher):**
 ```
-IsVirtualMachine()    → return false
-HasNoSystemHardware() → return false
-HasVirtualDevice()    → return false
-HasVirtualMacAddress()→ return false
-IsVirtualCpu()        → return false
-IsVirtualRegistry()   → return false
-IsVirtualSystem()     → return false
+IsVirtualMachine()    鈫?return false
+HasNoSystemHardware() 鈫?return false
+HasVirtualDevice()    鈫?return false
+HasVirtualMacAddress()鈫?return false
+IsVirtualCpu()        鈫?return false
+IsVirtualRegistry()   鈫?return false
+IsVirtualSystem()     鈫?return false
 ```
 
 **DisplayMonitor (by display-patcher):**
 ```
-TryLoadDisplays()          → returns true + fake internal display list
-ValidateConfiguration()    → returns ValidationResult(IsAllowed=true, InternalDisplays=1)
-ValidateConfiguration λ*   → all related lambdas return true
-WMI display methods        → return true (bypasses WmiMonitorBasicDisplayParams query)
+TryLoadDisplays()          鈫?returns true + fake internal display list
+ValidateConfiguration()    鈫?returns ValidationResult(IsAllowed=true, InternalDisplays=1)
+ValidateConfiguration 位*   鈫?all related lambdas return true
+WMI display methods        鈫?return true (bypasses WmiMonitorBasicDisplayParams query)
 ```
 
 ### VideoOutputTechnology enum overflow
@@ -472,7 +473,7 @@ dotnet publish -c Release -r win-x64 --self-contained true
 A: SEB logs may contain `VMware Virtual Platform` and `integrity compromised` warnings. If your school does NOT require you to submit SEB logs after the exam, the server only sees "exam completed normally." Always clean logs before any submission. See [Troubleshooting](#seb-logs-contain-vmware-traces).
 
 **Q: Which SEB versions does this work with?**
-A: Currently tested and confirmed on **SEB v3.10.1.864**. Other versions may work but are not guaranteed. SEB updates can invalidate the patches — re-run the patchers after updating.
+A: Currently tested and confirmed on **SEB v3.10.1.864**. Other versions may work but are not guaranteed. SEB updates can invalidate the patches 鈥?re-run the patchers after updating.
 
 **Q: Does this work with macOS/Linux?**
 A: No. This toolkit is Windows-only (both the patcher tools and the VMware setup). The SEB binary being patched is a Windows .NET assembly.
@@ -481,9 +482,9 @@ A: No. This toolkit is Windows-only (both the patcher tools and the VMware setup
 A: Technically possible but not supported. VMware's `smbios.reflecthost` and hypervisor hiding are more mature. VirtualBox leaks more VM signatures that SEB can detect.
 
 **Q: What if SEB asks for a configuration password?**
-A: You need the `.seb` configuration file from your institution. Download it from your exam portal and double-click it inside the VM. Do NOT open SEB directly — launch it via the `.seb` file.
+A: You need the `.seb` configuration file from your institution. Download it from your exam portal and double-click it inside the VM. Do NOT open SEB directly 鈥?launch it via the `.seb` file.
 
-**Q: I get "Application integrity is compromised" — is it broken?**
+**Q: I get "Application integrity is compromised" 鈥?is it broken?**
 A: No. This is a **warning**, not a blocker. SEB continues to run normally. The warning appears because the patched DLL differs from the original hash. It's logged locally but does not prevent the exam.
 
 **Q: The patched DLL got reverted after a Windows update. What do I do?**
@@ -511,7 +512,7 @@ We do not encourage academic dishonesty. Use responsibly.
 
 ## Credits
 
-- [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass) — Original approach of DLL replacement, referenced for the patching strategy
-- [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) — SEB source code (open source, GPL-3.0), used to understand detection mechanisms
-- [dnlib](https://github.com/0xd4d/dnlib) — .NET assembly manipulation library
-- [Mono.Cecil](https://github.com/jbevain/cecil) — IL manipulation library
+- [nxvvvv/safe-exam-browser-bypass](https://github.com/nxvvvv/safe-exam-browser-bypass) 鈥?Original approach of DLL replacement, referenced for the patching strategy
+- [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) 鈥?SEB source code (open source, GPL-3.0), used to understand detection mechanisms
+- [dnlib](https://github.com/0xd4d/dnlib) 鈥?.NET assembly manipulation library
+- [Mono.Cecil](https://github.com/jbevain/cecil) 鈥?IL manipulation library
