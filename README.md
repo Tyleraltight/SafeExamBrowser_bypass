@@ -1,4 +1,4 @@
-﻿# Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
+# Safe Exam Browser (SEB) v3.10.1 Bypass Toolkit
 
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
@@ -6,6 +6,16 @@
 [![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
 **English | [中文](README_zh.md)**
+
+> **[Update 2026-07-26 22:46 UTC+12]**
+> **All previously encountered issues have been completely resolved.**
+> Specifically fixed:
+> 1. The startup red screen integrity lock issue caused by `IntegrityModule` residing in `SafeExamBrowser.Configuration.dll`.
+> 2. The SEB "Session Locked" password prompt issue caused by forced VM reboots or unclean exits.
+> The patcher now achieves a truly stable bypass.
+
+![CMD Running](Screenshot_Successful_running/CMD_Running.png)
+![SEB Running](Screenshot_Successful_running/SEB_Running.png)
 
 ![SEB Running in VMware](VM_SEB_running.png)
 

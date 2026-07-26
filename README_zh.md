@@ -1,4 +1,4 @@
-﻿# Safe Exam Browser (SEB) v3.10.1 绕过工具包
+# Safe Exam Browser (SEB) v3.10.1 绕过工具包
 
 [![GitHub stars](https://img.shields.io/github/stars/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Tyleraltight/SafeExamBrowser_bypass?style=social)](https://github.com/Tyleraltight/SafeExamBrowser_bypass/network/members)
@@ -6,6 +6,16 @@
 [![SEB Version](https://img.shields.io/badge/SEB-v3.10.1%20%7C%20v3.10.2-blue)](https://github.com/SafeExamBrowser/seb-win-refactoring)
 
 **[English](README.md) | 中文**
+
+> **[2026-07-26 22:46 UTC+12 更新]**
+> **此前出现的所有问题已彻底解决。**
+> 具体修复了：
+> 1. `IntegrityModule` 在 `SafeExamBrowser.Configuration.dll` 中引发的启动红屏完整性锁定问题。
+> 2. 因为虚拟机强制重启或非正常退出造成的 SEB“会话锁定”密码弹窗问题。
+> 目前补丁工具已实现真正的稳定绕过。
+
+![CMD 运行成功](Screenshot_Successful_running/CMD_Running.png)
+![SEB 运行成功](Screenshot_Successful_running/SEB_Running.png)
 
 ![SEB 在 VMware 中成功运行](VM_SEB_running.png)
 

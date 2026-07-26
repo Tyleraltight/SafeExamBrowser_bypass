@@ -242,6 +242,89 @@ namespace SebPatcher
                 }
             }
 
+            // ── Patch IntegrityModule in Configuration.dll ───────────────
+            var configDllPath = Path.Combine(sebPath, "SafeExamBrowser.Configuration.dll");
+            if (File.Exists(configDllPath))
+            {
+                Console.WriteLine("\n[*] Patching IntegrityModule in Configuration.dll...");
+
+                var configBackup = configDllPath + ".bak";
+                if (!File.Exists(configBackup))
+                {
+                    File.Copy(configDllPath, configBackup, false);
+                    Console.WriteLine($"[+] Backup created: {configBackup}");
+                }
+                else
+                {
+                    Console.WriteLine($"[*] Backup already exists: {configBackup}");
+                }
+
+                var configBytes = File.ReadAllBytes(configDllPath);
+                var configCtx = new ModuleContext();
+                var configModule = ModuleDefMD.Load(configBytes, configCtx);
+                configModule.Context = configCtx;
+
+                var integrityPatchCount = 0;
+
+                foreach (var type in configModule.GetTypes())
+                {
+                    // Patch IntegrityModule — VerifyCodeIntegrity and any bool integrity methods
+                    if (type.Name == "IntegrityModule" || type.FullName.Contains("Integrity"))
+                    {
+                        Console.WriteLine($"[+] Found type: {type.FullName}");
+                        foreach (var method in type.Methods)
+                        {
+                            if (!method.HasBody) continue;
+
+                            bool shouldPatch = false;
+                            bool returnTrue = false;
+
+                            // VerifyCodeIntegrity, Verify, IsValid, etc. -> return true
+                            if ((method.Name.Contains("Verify") || method.Name.Contains("IsValid") || method.Name.Contains("Check"))
+                                && method.ReturnType.FullName == "System.Boolean")
+                            {
+                                shouldPatch = true;
+                                returnTrue = true;
+                            }
+                            // CalculateHash methods that return string -> patch to return empty string
+                            // (skip these, patching bool methods is sufficient)
+
+                            if (shouldPatch)
+                            {
+                                if (returnTrue)
+                                    PatchReturnTrue(method);
+
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"  [+] Patched (Integrity): {method.Name} -> returns {(returnTrue ? "true" : "false")}");
+                                Console.ResetColor();
+                                integrityPatchCount++;
+                            }
+                        }
+                    }
+                }
+
+                if (integrityPatchCount > 0)
+                {
+                    configModule.Write(configDllPath);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n[+] Patched {integrityPatchCount} integrity method(s) in Configuration.dll!");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("[!] No integrity methods found in Configuration.dll");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"\n[!] Configuration.dll not found at: {configDllPath}");
+                Console.WriteLine("    IntegrityModule was NOT patched — red lock screen may appear.");
+                Console.ResetColor();
+            }
+
             return 0;
         }
 
