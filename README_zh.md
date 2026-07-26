@@ -17,7 +17,6 @@
 ![CMD 运行成功](Screenshot_Successful_running/CMD_Running.png)
 ![SEB 运行成功](Screenshot_Successful_running/SEB_Running.png)
 
-![SEB 在 VMware 中成功运行](VM_SEB_running.png)
 
 > **仅供教育和研究用途。** 使用者需自行遵守所在机构的相关政策。
 
