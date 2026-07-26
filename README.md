@@ -17,7 +17,7 @@
 ![CMD Running](Screenshot_Successful_running/CMD_Running.png)
 ![SEB Running](Screenshot_Successful_running/SEB_Running.png)
 
-![SEB Running in VMware](VM_SEB_running.png)
+
 
 > **For educational and research purposes only.** Users are responsible for compliance with their institution's policies.
 
