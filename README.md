@@ -545,3 +545,11 @@ We do not encourage academic dishonesty. Use responsibly.
 - [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) — SEB source code (open source, GPL-3.0), used to understand detection mechanisms
 - [dnlib](https://github.com/0xd4d/dnlib) — .NET assembly manipulation library
 - [Mono.Cecil](https://github.com/jbevain/cecil) — IL manipulation library
+
+---
+
+## License & Copyright Notice
+
+**All Rights Reserved.**
+
+This repository is strictly for code viewing and research purposes only. **No license is granted** for copying, modifying, compiling, repackaging, redistributing, or using this software or its source code for any purpose without explicit written permission from the author.

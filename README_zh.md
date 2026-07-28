@@ -536,3 +536,11 @@ dotnet publish -c Release -r win-x64 --self-contained true
 - [SafeExamBrowser/seb-win-refactoring](https://github.com/SafeExamBrowser/seb-win-refactoring) — SEB 源码（开源，GPL-3.0），用于理解检测机制
 - [dnlib](https://github.com/0xd4d/dnlib) — .NET 程序集操作库
 - [Mono.Cecil](https://github.com/jbevain/cecil) — IL 操作库
+
+---
+
+## 许可与版权声明
+
+**保留所有权利 (All Rights Reserved)**
+
+本仓库代码仅供在线查看与研究使用。未经作者书面明确授权，**未授予任何人**复制、修改、编译、二次打包、重新分发或将本软件及其源代码用于任何目的的许可。
