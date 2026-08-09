@@ -45,6 +45,7 @@ if not exist "%DISPLAY_PATCHER%" (
 
 echo [1] Killing SEB processes and services...
 taskkill /f /im SafeExamBrowser.exe 2>nul
+taskkill /f /im SafeExamBrowser.Client.exe 2>nul
 taskkill /f /im SafeExamBrowser.Service.exe 2>nul
 taskkill /f /im dnSpy.exe 2>nul
 net stop SafeExamBrowser.Service >nul 2>&1
@@ -91,22 +92,20 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [5] Checking final result...
-for %%A in ("%TARGET_DLL%") do set NEW=%%~zA
-for %%A in ("%OUTPUT_DLL%") do set PAT=%%~zA
-echo     Expected: %PAT% bytes
-echo     Actual:   %NEW% bytes
-
-if "%NEW%"=="%PAT%" (
+echo [5] Verifying patch...
+"%SEB_PATCHER%" check "%SEB_DIR%"
+if %errorlevel% neq 0 (
     echo.
-    echo ========================================
-    echo   SUCCESS! ALL PATCHES APPLIED!
-    echo ========================================
-    echo You can now start Safe Exam Browser.
-) else (
-    echo.
-    echo [ERROR] FAILED - file was not replaced correctly.
+    echo [ERROR] FAILED - patch verification did not pass.
+    pause
+    exit /b 1
 )
+
+echo.
+echo ========================================
+echo   SUCCESS! ALL PATCHES APPLIED!
+echo ========================================
+echo You can now start Safe Exam Browser.
 
 pause
 exit /b 0

@@ -183,7 +183,10 @@ namespace SebPatcher
             {
                 foreach (var method in integrityModuleType.Methods)
                 {
-                    if (method.Name.Contains("VerifyCodeIntegrity") && method.HasBody && method.ReturnType.FullName == "System.Boolean")
+                    // Patch all bool-returning methods in IntegrityModule, regardless of name.
+                    // This ensures compatibility with future SEB versions that may add new
+                    // integrity check methods without predictable naming patterns.
+                    if (method.HasBody && method.ReturnType.FullName == "System.Boolean")
                     {
                         PatchReturnTrue(method);
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -268,7 +271,8 @@ namespace SebPatcher
 
                 foreach (var type in configModule.GetTypes())
                 {
-                    // Patch IntegrityModule — VerifyCodeIntegrity and any bool integrity methods
+                    // Patch IntegrityModule and all its nested types — VerifyCodeIntegrity and any bool integrity methods.
+                    // Matching is intentionally broad to cover new methods added in future SEB versions.
                     if (type.Name == "IntegrityModule" || type.FullName.Contains("Integrity"))
                     {
                         Console.WriteLine($"[+] Found type: {type.FullName}");
@@ -276,26 +280,14 @@ namespace SebPatcher
                         {
                             if (!method.HasBody) continue;
 
-                            bool shouldPatch = false;
-                            bool returnTrue = false;
-
-                            // VerifyCodeIntegrity, Verify, IsValid, etc. -> return true
-                            if ((method.Name.Contains("Verify") || method.Name.Contains("IsValid") || method.Name.Contains("Check"))
-                                && method.ReturnType.FullName == "System.Boolean")
+                            // Patch ALL bool-returning methods (not just Verify/IsValid/Check)
+                            // to ensure coverage against renamed or newly-added integrity checks.
+                            if (method.ReturnType.FullName == "System.Boolean")
                             {
-                                shouldPatch = true;
-                                returnTrue = true;
-                            }
-                            // CalculateHash methods that return string -> patch to return empty string
-                            // (skip these, patching bool methods is sufficient)
-
-                            if (shouldPatch)
-                            {
-                                if (returnTrue)
-                                    PatchReturnTrue(method);
+                                PatchReturnTrue(method);
 
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine($"  [+] Patched (Integrity): {method.Name} -> returns {(returnTrue ? "true" : "false")}");
+                                Console.WriteLine($"  [+] Patched (Integrity): {method.Name} -> returns true");
                                 Console.ResetColor();
                                 integrityPatchCount++;
                             }
@@ -424,16 +416,16 @@ namespace SebPatcher
             return 0;
         }
 
-        static void PrintBanner()
+        static void PrintBanner(string version = "3.10.x")
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(@"
+            Console.WriteLine($@"
   ____  ____  _   _    _    ____
  / ___|| __ )| \ | |  / \  |  _ \
  \___ \|  _ \|  \| | / _ \ | |_) |
   ___) | |_) | |\  |/ ___ \|  __/
  |____/|____/|_| \_/_/   \_\_|
-  Safe Exam Browser v3.10.1 IL Patcher
+  Safe Exam Browser IL Patcher (v{version})
 ");
             Console.ResetColor();
         }

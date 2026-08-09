@@ -7,12 +7,14 @@
 
 **English | [中文](README_zh.md)**
 
-> **[Update 2026-07-26 22:46 UTC+12]**
-> **All previously encountered issues have been completely resolved.**
+> **[Update 2026-08-09]**
+> **Major stability update for SEB v3.10.2 & Delayed Red Screen fix.**
 > Specifically fixed:
-> 1. The startup red screen integrity lock issue caused by `IntegrityModule` residing in `SafeExamBrowser.Configuration.dll`.
-> 2. The SEB "Session Locked" password prompt issue caused by forced VM reboots or unclean exits.
-> The patcher now achieves a truly stable bypass.
+> 1. The 10-minute delayed red screen issue caused by `DisplayMonitor` polling during VM window resizes or VMware display re-enumerations.
+> 2. Expanded IntegrityModule IL patching to fully bypass the new background integrity checks introduced silently in SEB 3.10.2.920.
+> 3. The startup red screen integrity lock issue caused by `IntegrityModule` residing in `SafeExamBrowser.Configuration.dll`.
+> 4. The SEB "Session Locked" password prompt issue caused by forced VM reboots or unclean exits.
+> The patcher now achieves a truly stable bypass for both 3.10.1 and 3.10.2.
 
 ![CMD Running](Screenshot_Successful_running/CMD_Running.png)
 ![SEB Running](Screenshot_Successful_running/SEB_Running.png)

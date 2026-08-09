@@ -151,6 +151,66 @@ class Program
                     Console.WriteLine("[*] Patching WMI method: " + method.Name);
                     PatchReturnTrue(method, ref patchCount);
                 }
+
+                // 5. Patch display settings change event handlers (void return).
+                //    These are called by Windows when the display configuration changes
+                //    (e.g. VMware resizes the VM window or resumes from snapshot).
+                //    If not patched, they call ValidateConfiguration and may trigger LockSession.
+                if (method.ReturnType.FullName == "System.Void")
+                {
+                    bool isDisplayEventHandler =
+                        method.Name.Contains("OnDisplay") ||
+                        method.Name.Contains("DisplaySettings") ||
+                        method.Name.Contains("CheckDisplay") ||
+                        method.Name.Contains("HandleDisplay") ||
+                        method.Name.Contains("DisplayChanged") ||
+                        method.Name.Contains("SettingsChanged");
+                    if (isDisplayEventHandler)
+                    {
+                        Console.WriteLine("[*] Patching display event handler (void nop): " + method.Name);
+                        PatchReturnVoid(method, ref patchCount);
+                    }
+                }
+
+                // 6. Patch any void method that calls ValidateConfiguration internally.
+                //    This catches event handlers and timer callbacks that were not
+                //    caught by name matching above.
+                if (method.ReturnType.FullName == "System.Void" && method.HasBody)
+                {
+                    bool callsValidate = method.Body.Instructions.Any(i =>
+                        (i.OpCode == OpCodes.Call || i.OpCode == OpCodes.Callvirt) &&
+                        i.Operand is MethodReference mr &&
+                        mr.Name == "ValidateConfiguration");
+                    if (callsValidate)
+                    {
+                        Console.WriteLine("[*] Patching caller of ValidateConfiguration (void nop): " + method.Name);
+                        PatchReturnVoid(method, ref patchCount);
+                    }
+                }
+
+                // 7. Patch timer callbacks that contain a LockSession / SessionLockRequested invoke.
+                //    These are the periodic display-check timers inside DisplayMonitor.
+                if (method.ReturnType.FullName == "System.Void" && method.HasBody)
+                {
+                    bool hasLockInvoke = method.Body.Instructions.Any(i =>
+                        (i.OpCode == OpCodes.Call || i.OpCode == OpCodes.Callvirt ||
+                         i.OpCode == OpCodes.Ldftn || i.OpCode == OpCodes.Ldvirtftn) &&
+                        i.Operand is MethodReference mr &&
+                        (mr.Name.Contains("Lock") || mr.Name.Contains("SessionLock") ||
+                         mr.Name.Contains("Invoke") || mr.Name.Contains("Raise")));
+                    bool isTimerOrCheck =
+                        method.Name.Contains("OnTimer") ||
+                        method.Name.Contains("Elapsed") ||
+                        method.Name.Contains("Tick") ||
+                        method.Name.Contains("Monitor") ||
+                        method.Name.Contains("Verify") ||
+                        method.Name.Contains("Check");
+                    if (hasLockInvoke && isTimerOrCheck)
+                    {
+                        Console.WriteLine("[*] Patching timer/check callback with Lock invoke (void nop): " + method.Name);
+                        PatchReturnVoid(method, ref patchCount);
+                    }
+                }
             }
 
             // Recurse into nested types
@@ -398,6 +458,24 @@ class Program
         method.Body.InitLocals = false;
         method.Body.MaxStackSize = 1;
         Console.WriteLine("    [+] -> return true");
+        patchCount++;
+    }
+
+    // Replaces a void method body with a single `ret` — making it a no-op.
+    // Used to silence event handlers and timer callbacks that would otherwise
+    // call ValidateConfiguration and raise SessionLockRequested on display change.
+    static void PatchReturnVoid(MethodDefinition method, ref int patchCount)
+    {
+        var il = method.Body.GetILProcessor();
+        method.Body.Instructions.Clear();
+        method.Body.Variables.Clear();
+        method.Body.ExceptionHandlers.Clear();
+
+        il.Append(il.Create(OpCodes.Ret));
+
+        method.Body.InitLocals = false;
+        method.Body.MaxStackSize = 0;
+        Console.WriteLine("    [+] -> return void (nop)");
         patchCount++;
     }
 }
