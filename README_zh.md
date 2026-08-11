@@ -7,12 +7,14 @@
 
 **[English](README.md) | 中文**
 
-> **[2026-07-26 22:46 UTC+12 更新]**
-> **此前出现的所有问题已彻底解决。**
-> 具体修复了：
-> 1. `IntegrityModule` 在 `SafeExamBrowser.Configuration.dll` 中引发的启动红屏完整性锁定问题。
-> 2. 因为虚拟机强制重启或非正常退出造成的 SEB“会话锁定”密码弹窗问题。
-> 目前补丁工具已实现真正的稳定绕过。
+> **[2026-08-11 更新]**
+> **彻底修复 SEB v3.10.2 & v3.10.1 中运行 10 多分钟后出现的红屏锁定问题。**
+> 具体修复：
+> 1. 修复了 `SafeExamBrowser.Client.exe` 内部 `IntegrityResponsibility.ScheduleIntegrityVerification` 后台定时器引起的 10 分钟延迟红屏问题。
+> 2. 禁用所有可能在虚拟机环境内触发锁屏的 `Sentinel` 系统事件回调（如 SessionChanged、CursorChanged 等）。
+> 3. 对 `SafeExamBrowser.exe` (Runtime) 进行 Patch，强制所有 Integrity 和 VirtualMachine Operation 返回 `Success`。
+> 4. 彻底禁用 `SafeExamBrowser.Service` 服务，防止其独立终止 SEB 进程。
+> 补丁工具现已成功覆盖主 EXE 文件中新增的 25 个关键方法，实现真正持久稳定的绕过。
 
 ![CMD 运行成功](Screenshot_Successful_running/CMD_Running.png)
 ![SEB 运行成功](Screenshot_Successful_running/SEB_Running.png)
