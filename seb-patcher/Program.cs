@@ -2,6 +2,7 @@ using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace SebPatcher
 {
@@ -317,6 +318,184 @@ namespace SebPatcher
                 Console.ResetColor();
             }
 
+            // ── Patch Client.exe — IntegrityResponsibility + MonitoringResponsibility ──
+            var clientPath = Path.Combine(sebPath, "SafeExamBrowser.Client.exe");
+            if (File.Exists(clientPath))
+            {
+                Console.WriteLine("\n[*] Patching SafeExamBrowser.Client.exe...");
+
+                var clientBackup = clientPath + ".bak";
+                if (!File.Exists(clientBackup))
+                {
+                    File.Copy(clientPath, clientBackup, false);
+                    Console.WriteLine($"[+] Backup created: {clientBackup}");
+                }
+
+                var clientBytes = File.ReadAllBytes(clientPath);
+                var clientCtx = new ModuleContext();
+                var clientModule = ModuleDefMD.Load(clientBytes, clientCtx);
+                clientModule.Context = clientCtx;
+                var clientPatchCount = 0;
+
+                foreach (var type in clientModule.GetTypes())
+                {
+                    // 1. IntegrityResponsibility — scheduled integrity timer + verify methods
+                    if (type.Name == "IntegrityResponsibility" || type.FullName.Contains("IntegrityResponsibility"))
+                    {
+                        Console.WriteLine($"[+] Found type: {type.FullName}");
+                        foreach (var method in type.Methods)
+                        {
+                            if (!method.HasBody || method.IsConstructor) continue;
+
+                            bool shouldPatch = method.Name.Contains("Integrity") ||
+                                               method.Name.Contains("Schedule") ||
+                                               method.Name.Contains("Verify") ||
+                                               method.Name.StartsWith("<"); // lambda callbacks
+
+                            if (shouldPatch && method.ReturnType.FullName == "System.Void")
+                            {
+                                PatchReturnVoid(method);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"  [+] Patched (Client Integrity): {method.Name} -> void nop");
+                                Console.ResetColor();
+                                clientPatchCount++;
+                            }
+                        }
+                    }
+
+                    // 2. MonitoringResponsibility — Sentinel event handlers + display change
+                    if (type.Name == "MonitoringResponsibility" || type.FullName.Contains("MonitoringResponsibility"))
+                    {
+                        Console.WriteLine($"[+] Found type: {type.FullName}");
+                        foreach (var method in type.Methods)
+                        {
+                            if (!method.HasBody || method.IsConstructor) continue;
+
+                            bool isSentinel = method.Name.Contains("Sentinel_") ||
+                                             method.Name.Contains("DisplayMonitor_") ||
+                                             method.Name.StartsWith("<"); // lambda callbacks
+
+                            if (isSentinel && method.ReturnType.FullName == "System.Void")
+                            {
+                                PatchReturnVoid(method);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"  [+] Patched (Client Monitoring): {method.Name} -> void nop");
+                                Console.ResetColor();
+                                clientPatchCount++;
+                            }
+                        }
+                    }
+                }
+
+                if (clientPatchCount > 0)
+                {
+                    clientModule.Write(clientPath);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n[+] Patched {clientPatchCount} method(s) in Client.exe!");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"\n[!] Client.exe not found at: {clientPath}");
+                Console.ResetColor();
+            }
+
+            // ── Patch SafeExamBrowser.exe (Runtime) — Operations ──
+            // OperationResult enum: Aborted=1, Failed=2, Success=3
+            var runtimePath = Path.Combine(sebPath, "SafeExamBrowser.exe");
+            if (File.Exists(runtimePath))
+            {
+                Console.WriteLine("\n[*] Patching SafeExamBrowser.exe (Runtime)...");
+
+                var rtBackup = runtimePath + ".bak";
+                if (!File.Exists(rtBackup))
+                {
+                    File.Copy(runtimePath, rtBackup, false);
+                    Console.WriteLine($"[+] Backup created: {rtBackup}");
+                }
+
+                var rtBytes = File.ReadAllBytes(runtimePath);
+                var rtCtx = new ModuleContext();
+                var rtModule = ModuleDefMD.Load(rtBytes, rtCtx);
+                rtModule.Context = rtCtx;
+                var rtPatchCount = 0;
+
+                // Target operation type names and their methods to patch
+                var targetOps = new[] {
+                    "ApplicationIntegrityOperation",
+                    "SessionIntegrityOperation",
+                    "VirtualMachineOperation"
+                };
+
+                foreach (var type in rtModule.GetTypes())
+                {
+                    bool isTargetOp = Array.Exists(targetOps, t => type.Name == t);
+                    if (!isTargetOp) continue;
+
+                    Console.WriteLine($"[+] Found type: {type.FullName}");
+                    foreach (var method in type.Methods)
+                    {
+                        if (!method.HasBody || method.IsConstructor) continue;
+
+                        // Patch Perform/Repeat/Revert/ValidatePolicy → return OperationResult.Success (3)
+                        bool isOpMethod = method.Name == "Perform" ||
+                                         method.Name == "Repeat" ||
+                                         method.Name == "Revert" ||
+                                         method.Name == "ValidatePolicy";
+
+                        if (isOpMethod && method.ReturnType.FullName.Contains("OperationResult"))
+                        {
+                            PatchReturnInt(method, 3); // 3 = OperationResult.Success
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"  [+] Patched (Runtime): {method.Name} -> OperationResult.Success");
+                            Console.ResetColor();
+                            rtPatchCount++;
+                        }
+
+                        // Patch bool-returning verification methods → return true
+                        if (method.ReturnType.FullName == "System.Boolean" &&
+                            (method.Name.Contains("Verify") || method.Name.Contains("Initialize") ||
+                             method.Name.Contains("Validate")))
+                        {
+                            PatchReturnTrue(method);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"  [+] Patched (Runtime): {method.Name} -> return true");
+                            Console.ResetColor();
+                            rtPatchCount++;
+                        }
+
+                        // Patch void methods that contain integrity/verification logic
+                        if (method.ReturnType.FullName == "System.Void" &&
+                            (method.Name.Contains("Verify") || method.Name.Contains("Finalize") ||
+                             method.Name.Contains("Log")) &&
+                            !method.Name.StartsWith("add_") && !method.Name.StartsWith("remove_"))
+                        {
+                            PatchReturnVoid(method);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"  [+] Patched (Runtime): {method.Name} -> void nop");
+                            Console.ResetColor();
+                            rtPatchCount++;
+                        }
+                    }
+                }
+
+                if (rtPatchCount > 0)
+                {
+                    rtModule.Write(runtimePath);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n[+] Patched {rtPatchCount} method(s) in SafeExamBrowser.exe!");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"\n[!] SafeExamBrowser.exe not found at: {runtimePath}");
+                Console.ResetColor();
+            }
+
             return 0;
         }
 
@@ -341,6 +520,29 @@ namespace SebPatcher
 
             // Replace with: ldc.i4.1; ret  (i.e., return true)
             method.Body.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
+            method.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        }
+
+        static void PatchReturnVoid(MethodDef method)
+        {
+            method.Body.Instructions.Clear();
+            method.Body.ExceptionHandlers.Clear();
+            method.Body.Variables.Clear();
+            method.Body.InitLocals = false;
+
+            // Replace with just: ret  (void no-op)
+            method.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+        }
+
+        static void PatchReturnInt(MethodDef method, int value)
+        {
+            method.Body.Instructions.Clear();
+            method.Body.ExceptionHandlers.Clear();
+            method.Body.Variables.Clear();
+            method.Body.InitLocals = false;
+
+            // Replace with: ldc.i4 <value>; ret
+            method.Body.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(value));
             method.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
         }
 

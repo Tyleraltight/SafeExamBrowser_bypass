@@ -49,6 +49,7 @@ taskkill /f /im SafeExamBrowser.Client.exe 2>nul
 taskkill /f /im SafeExamBrowser.Service.exe 2>nul
 taskkill /f /im dnSpy.exe 2>nul
 net stop SafeExamBrowser.Service >nul 2>&1
+sc config SafeExamBrowser.Service start=disabled >nul 2>&1
 timeout /t 2 /nobreak >nul
 echo.
 
