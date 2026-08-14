@@ -198,6 +198,35 @@ namespace SebPatcher
                 }
             }
 
+            // 4. ApplicationMonitor — prevent self-kill of SEB's own windows/processes
+            foreach (var type in module.GetTypes())
+            {
+                if (type.Name != "ApplicationMonitor") continue;
+
+                Console.WriteLine($"[+] Found type: {type.FullName}");
+                foreach (var method in type.Methods)
+                {
+                    if (!method.HasBody || method.IsConstructor) continue;
+
+                    // Nop the 4 handlers that detect and terminate "unauthorized" processes
+                    bool isKillHandler =
+                        method.Name == "SystemEvent_WindowChanged" ||
+                        method.Name == "Timer_Elapsed" ||
+                        method.Name == "HandleInstanceStart" ||
+                        method.Name == "HandleExplorerStart";
+
+                    if (isKillHandler && method.ReturnType.FullName == "System.Void")
+                    {
+                        PatchReturnVoid(method);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"  [+] Patched (AppMonitor): {method.Name} -> void nop");
+                        Console.ResetColor();
+                        patchedCount++;
+                    }
+                }
+                break;
+            }
+
             if (patchedCount == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -373,6 +402,7 @@ namespace SebPatcher
 
                             bool isSentinel = method.Name.Contains("Sentinel_") ||
                                              method.Name.Contains("DisplayMonitor_") ||
+                                             method.Name.Contains("ApplicationMonitor_") ||
                                              method.Name.StartsWith("<"); // lambda callbacks
 
                             if (isSentinel && method.ReturnType.FullName == "System.Void")
