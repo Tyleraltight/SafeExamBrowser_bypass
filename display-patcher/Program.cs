@@ -7,17 +7,69 @@ using System.Linq;
 
 class Program
 {
-    static void Main(string[] args)
+    const string DefaultDllPath = @"C:\Program Files\SafeExamBrowser\Application\SafeExamBrowser.Monitoring.dll";
+
+    static int Main(string[] args)
     {
         Console.WriteLine("========================================");
-        Console.WriteLine("  SEB Display Patcher v6.0");
+        Console.WriteLine("  SEB Display Patcher v6.1");
         Console.WriteLine("========================================\n");
 
-        string dllPath = @"C:\Program Files\SafeExamBrowser\Application\SafeExamBrowser.Monitoring.dll";
+        bool pause = false;
+        bool inPlace = false;
+        string targetArg = null;
+        string outArg = null;
 
-        // Output to the EXE's own directory (shared folder) to avoid permission issues
+        for (int i = 0; i < args.Length; i++)
+        {
+            var arg = args[i];
+            if (arg.Equals("--pause", StringComparison.OrdinalIgnoreCase))
+            {
+                pause = true;
+            }
+            else if (arg.Equals("--in-place", StringComparison.OrdinalIgnoreCase))
+            {
+                inPlace = true;
+            }
+            else if (arg.Equals("--path", StringComparison.OrdinalIgnoreCase) || arg.Equals("-p", StringComparison.OrdinalIgnoreCase))
+            {
+                if (i + 1 >= args.Length)
+                {
+                    Console.WriteLine("[ERROR] Missing path value after " + arg);
+                    return 1;
+                }
+                targetArg = args[++i].Trim('"');
+            }
+            else if (arg.StartsWith("--path=", StringComparison.OrdinalIgnoreCase))
+            {
+                targetArg = arg.Substring("--path=".Length).Trim('"');
+            }
+            else if (arg.Equals("--out", StringComparison.OrdinalIgnoreCase) || arg.Equals("-o", StringComparison.OrdinalIgnoreCase))
+            {
+                if (i + 1 >= args.Length)
+                {
+                    Console.WriteLine("[ERROR] Missing output path value after " + arg);
+                    return 1;
+                }
+                outArg = args[++i].Trim('"');
+            }
+            else if (arg.StartsWith("--out=", StringComparison.OrdinalIgnoreCase))
+            {
+                outArg = arg.Substring("--out=".Length).Trim('"');
+            }
+            else if (!arg.StartsWith("-", StringComparison.Ordinal) && targetArg == null)
+            {
+                targetArg = arg.Trim('"');
+            }
+        }
+
+        string dllPath = ResolveTargetDllPath(targetArg);
+
+        // Output to the EXE's own directory by default (backward compatible with patch_all.cmd)
         string exeDir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? Directory.GetCurrentDirectory());
-        string outputPath = Path.Combine(exeDir, "SafeExamBrowser.Monitoring.dll");
+        string outputPath = outArg != null
+            ? outArg
+            : (inPlace ? dllPath : Path.Combine(exeDir, "SafeExamBrowser.Monitoring.dll"));
 
         Console.WriteLine("[*] Source: " + dllPath);
         Console.WriteLine("[*] Output: " + outputPath);
@@ -25,28 +77,31 @@ class Program
         if (!File.Exists(dllPath))
         {
             Console.WriteLine("[ERROR] SEB DLL not found! Is SEB installed?");
-            Console.ReadKey();
-            return;
+            if (pause) Console.ReadKey();
+            return 1;
         }
 
-        // Kill SEB
-        try
+        // Only stop SEB processes/service when targeting the live Program Files installation
+        if (string.Equals(Path.GetFullPath(dllPath), Path.GetFullPath(DefaultDllPath), StringComparison.OrdinalIgnoreCase))
         {
-            foreach (var name in new[] { "SafeExamBrowser", "SafeExamBrowser.Service" })
+            try
             {
-                foreach (var p in System.Diagnostics.Process.GetProcessesByName(name))
+                foreach (var name in new[] { "SafeExamBrowser", "SafeExamBrowser.Service" })
                 {
-                    Console.WriteLine("[*] Killing " + name + " PID " + p.Id);
-                    try { p.Kill(); } catch { }
+                    foreach (var p in System.Diagnostics.Process.GetProcessesByName(name))
+                    {
+                        Console.WriteLine("[*] Killing " + name + " PID " + p.Id);
+                        try { p.Kill(); } catch { }
+                    }
                 }
+                var psi = new System.Diagnostics.ProcessStartInfo("cmd", "/c net stop SafeExamBrowser.Service")
+                { UseShellExecute = false, CreateNoWindow = true };
+                var proc = System.Diagnostics.Process.Start(psi);
+                proc?.WaitForExit(5000);
+                System.Threading.Thread.Sleep(2000);
             }
-            var psi = new System.Diagnostics.ProcessStartInfo("cmd", "/c net stop SafeExamBrowser.Service")
-            { UseShellExecute = false, CreateNoWindow = true };
-            var proc = System.Diagnostics.Process.Start(psi);
-            proc?.WaitForExit(5000);
-            System.Threading.Thread.Sleep(2000);
+            catch { }
         }
-        catch { }
 
         Console.WriteLine("[*] Opening DLL...");
         var resolver = new DefaultAssemblyResolver();
@@ -55,7 +110,8 @@ class Program
         if (Directory.Exists(dotnetDir)) resolver.AddSearchDirectory(dotnetDir);
         if (Directory.Exists(sebDir)) resolver.AddSearchDirectory(sebDir);
 
-        var assembly = AssemblyDefinition.ReadAssembly(dllPath,
+        var dllBytes = File.ReadAllBytes(dllPath);
+        var assembly = AssemblyDefinition.ReadAssembly(new MemoryStream(dllBytes),
             new ReaderParameters { AssemblyResolver = resolver });
 
         // Find List<T>
@@ -97,21 +153,58 @@ class Program
                 assembly.MainModule.Attributes &= ~ModuleAttributes.StrongNameSigned;
             }
 
-            assembly.Write(outputPath, new WriterParameters { WriteSymbols = false });
+            if (inPlace && !File.Exists(dllPath + ".bak"))
+            {
+                File.WriteAllBytes(dllPath + ".bak", dllBytes);
+                Console.WriteLine("[+] Backup created: " + dllPath + ".bak");
+            }
+
+            try
+            {
+                var tmpOut = outputPath + ".tmp";
+                assembly.Write(tmpOut, new WriterParameters { WriteSymbols = false });
+                if (File.Exists(outputPath))
+                    File.Replace(tmpOut, outputPath, null);
+                else
+                    File.Move(tmpOut, outputPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n[ERROR] Failed to write patched DLL: " + ex.Message);
+                if (pause && !Console.IsInputRedirected) Console.ReadKey();
+                return 1;
+            }
             Console.WriteLine("\n========================================");
             Console.WriteLine("  SUCCESS! " + patchCount + " methods patched");
             Console.WriteLine("  Patched DLL saved to:");
             Console.WriteLine("  " + outputPath);
             Console.WriteLine("========================================");
-            Console.WriteLine("\nNOW RUN fix_display.cmd AS ADMIN!");
+            if (string.Equals(Path.GetFullPath(dllPath), Path.GetFullPath(DefaultDllPath), StringComparison.OrdinalIgnoreCase))
+                Console.WriteLine("\nNOW RUN fix_display.cmd AS ADMIN!");
         }
         else
         {
             Console.WriteLine("\n[!] Nothing was patched.");
         }
 
-        Console.WriteLine("\nPress any key to exit.");
-        Console.ReadKey();
+        if (pause)
+        {
+            Console.WriteLine("\nPress any key to exit.");
+            Console.ReadKey();
+        }
+
+        return patchCount > 0 ? 0 : 1;
+    }
+
+    static string ResolveTargetDllPath(string targetArg)
+    {
+        if (string.IsNullOrWhiteSpace(targetArg))
+            return DefaultDllPath;
+
+        if (targetArg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) || File.Exists(targetArg))
+            return targetArg;
+
+        return Path.Combine(targetArg, "SafeExamBrowser.Monitoring.dll");
     }
 
     static void PatchAllTypes(IEnumerable<TypeDefinition> types, ref int patchCount,
@@ -391,9 +484,18 @@ class Program
                                     if (internalField != null)
                                     {
                                         var importedTechSetter = module.ImportReference(techProp.SetMethod);
+                                        var underlyingType = techType.Fields
+                                            .FirstOrDefault(f => !f.IsStatic && f.Name == "value__")
+                                            ?.FieldType.FullName;
+                                        bool is64BitEnum = underlyingType == "System.Int64" || underlyingType == "System.UInt64";
+                                        long rawVal = underlyingType == "System.UInt64"
+                                            ? unchecked((long)Convert.ToUInt64(internalField.Constant))
+                                            : Convert.ToInt64(internalField.Constant);
+
                                         il.Append(il.Create(OpCodes.Ldloc, displayVar));
-                                        long rawVal = Convert.ToInt64(internalField.Constant);
-                                        il.Append(il.Create(OpCodes.Ldc_I4, unchecked((int)rawVal)));
+                                        il.Append(is64BitEnum
+                                            ? il.Create(OpCodes.Ldc_I8, rawVal)
+                                            : il.Create(OpCodes.Ldc_I4, unchecked((int)rawVal)));
                                         il.Append(il.Create(OpCodes.Callvirt, importedTechSetter));
                                         Console.WriteLine("    [+] Set Technology = Internal (0x" + rawVal.ToString("X") + ")");
                                     }
@@ -408,7 +510,11 @@ class Program
                         // list.Add(display)
                         var addRef = new MethodReference("Add",
                             module.TypeSystem.Void, importedConcreteList);
-                        addRef.Parameters.Add(new ParameterDefinition(importedElementType));
+                        addRef.HasThis = true;
+                        var elemGenericParam = importedListType.GenericParameters.Count > 0
+                            ? importedListType.GenericParameters[0]
+                            : new GenericParameter(importedListType);
+                        addRef.Parameters.Add(new ParameterDefinition(elemGenericParam));
 
                         il.Append(il.Create(OpCodes.Ldloc, listVar));
                         il.Append(il.Create(OpCodes.Ldloc, displayVar));

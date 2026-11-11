@@ -78,7 +78,12 @@ SEB_KEY_NAMES = {
     "blockPopUpWindows": "Block Pop-ups",
     "allowVideoCapture": "Allow Video Capture",
     "allowAudioCapture": "Allow Audio Capture",
-    "allowScreenCapture": "Allow Screen Capture",
+    "allowScreenSharing": "Allow Screen Sharing (RDP / Capture)",
+    "allowScreenCapture": "Allow Screen Capture (Legacy)",
+    "createNewDesktop": "Create New Desktop (Kiosk Mode)",
+    "disableSessionChangeLockScreen": "Disable Session Change Lock Screen",
+    "sebServicePolicy": "SEB Service Policy",
+    "sebServiceIgnore": "Ignore SEB Service",
     "enableVirtualMachineDetection": "VM Detection",
     "allowVirtualMachine": "Allow VM",
     "blockAccessToLocalFiles": "Block Local Files",
@@ -101,6 +106,13 @@ SEB_KEY_NAMES = {
     "enableUIInterrupts": "UI Interrupts Enabled",
     "originatorVersion": "SEB Version",
     "sebMode": "SEB Mode",
+}
+
+
+SERVICE_POLICY_NAMES = {
+    0: "Mandatory (0)",
+    1: "Optional (1)",
+    2: "Warn (2)",
 }
 
 
@@ -130,6 +142,7 @@ class SEBConfigAnalyzer:
             "encryption": {},
             "config": {},
             "security_settings": {},
+            "rdp_vmware_notes": [],
             "findings": [],
         }
 
@@ -144,18 +157,23 @@ class SEBConfigAnalyzer:
         result["encryption"]["format"] = fmt
         cprint(f"  Format: {fmt}", "WHITE")
 
-        # Try decryption
-        if password:
+        # Try decryption (or direct parse for plaintext plist)
+        if password or fmt == "plaintext_plist":
             plist_data = self._decrypt(data, password, fmt)
             if plist_data:
                 result["encryption"]["decrypted"] = True
-                result["encryption"]["method"] = "AES-256-CBC with PBKDF2"
+                result["encryption"]["method"] = (
+                    "None (plaintext plist)"
+                    if fmt == "plaintext_plist"
+                    else "AES-256-CBC with PBKDF2"
+                )
 
                 # Parse plist
                 try:
                     config = plistlib.loads(plist_data)
                     result["config"] = self._sanitize_config(config)
                     result["security_settings"] = self._extract_security(config)
+                    result["rdp_vmware_notes"] = self._analyze_rdp_vmware_notes(config)
                     cprint(f"  [+] Decrypted successfully — {len(config)} keys", "GREEN")
                 except Exception as e:
                     cprint(f"  [-] Plist parse error: {e}", "RED")
@@ -217,12 +235,12 @@ class SEBConfigAnalyzer:
 
     def _decrypt(self, data: bytes, password: str, fmt: str) -> bytes | None:
         """Decrypt a .seb config file."""
+        if fmt == "plaintext_plist":
+            return data
+
         if not HAS_CRYPTO:
             cprint("  [-] pycryptodome not installed!", "RED")
             return None
-
-        if fmt == "plaintext_plist":
-            return data
 
         if fmt == "encrypted_v2":
             return self._decrypt_v2(data, password)
@@ -287,9 +305,14 @@ class SEBConfigAnalyzer:
             ("allowCopy", "Copy Allowed", True),
             ("allowPaste", "Paste Allowed", True),
             ("allowPrinting", "Printing Allowed", True),
-            ("allowScreenCapture", "Screen Capture", True),
+            ("allowScreenSharing", "Screen Sharing (RDP / Capture)", True),
+            ("allowScreenCapture", "Screen Capture (Legacy)", True),
             ("allowVideoCapture", "Video Capture", True),
             ("allowAudioCapture", "Audio Capture", True),
+            ("createNewDesktop", "Create New Desktop", True),
+            ("disableSessionChangeLockScreen", "Disable Session Change Lock Screen", True),
+            ("sebServiceIgnore", "Ignore SEB Service", True),
+            ("allowVirtualMachine", "VM Allowed (Config)", True),
             ("enableVirtualMachineDetection", "VM Detection", True),
             ("blockPopUpWindows", "Pop-up Blocking", True),
             ("blockAccessToLocalFiles", "Local File Access Blocked", True),
@@ -313,6 +336,15 @@ class SEBConfigAnalyzer:
                 else:
                     security[name] = str(val)
 
+        if "sebServicePolicy" in config:
+            raw_policy = config["sebServicePolicy"]
+            if isinstance(raw_policy, int):
+                security["SEB Service Policy"] = SERVICE_POLICY_NAMES.get(
+                    raw_policy, f"Unknown ({raw_policy})"
+                )
+            else:
+                security["SEB Service Policy"] = str(raw_policy)
+
         # Process lists
         for list_key in ["blacklistedProcesses", "whitelistedProcesses",
                          "allowedProcesses", "blockedProcesses"]:
@@ -330,6 +362,126 @@ class SEBConfigAnalyzer:
                     security[filter_key] = flt
 
         return security
+
+    @staticmethod
+    def _as_bool(value):
+        """Normalize bool/int/string plist values to bool or None."""
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return value != 0
+        if isinstance(value, str):
+            low = value.strip().lower()
+            if low in ("true", "1", "yes"):
+                return True
+            if low in ("false", "0", "no"):
+                return False
+        return None
+
+    def _analyze_rdp_vmware_notes(self, config: dict) -> list[dict]:
+        """Generate RDP and VMware behavior notes from SEB configuration keys."""
+        notes = []
+
+        # Table-driven boolean keys (key, default, scope, true_detail, false_detail, include_when)
+        bool_specs = [
+            (
+                "allowScreenSharing",
+                False,
+                "RDP",
+                "allowScreenSharing is true: SEB allows remote sessions and skips WDA_EXCLUDEFROMCAPTURE.",
+                "SEB blocks RDP via RemoteSessionOperation and applies WDA_EXCLUDEFROMCAPTURE (windows render black/invisible over RDP unless patched).",
+                "always",
+            ),
+            (
+                "createNewDesktop",
+                True,
+                "RDP",
+                "SEB creates a custom desktop and calls SwitchDesktop/CreateProcess, which often fails or freezes in Windows RDP sessions unless KioskModeOperation is patched.",
+                "createNewDesktop is false: SEB runs on the active desktop (DisableExplorerShell or None), avoiding custom-desktop RDP failures.",
+                "always",
+            ),
+            (
+                "disableSessionChangeLockScreen",
+                False,
+                "RDP / VMware",
+                "",
+                "RDP reconnects or VMware console/session switches trigger the red lock screen unless SafeExamBrowser.Client.exe (MonitoringResponsibility) is patched.",
+                "false_only",
+            ),
+            (
+                "allowVirtualMachine",
+                False,
+                "VMware",
+                "allowVirtualMachine is true in config.",
+                "allowVirtualMachine is false: requires VirtualMachineDetector and VirtualMachineOperation patches in VMware (does not affect browser WebGL/face-detection).",
+                "present_only",
+            ),
+        ]
+
+        for key, default, scope, true_detail, false_detail, mode in bool_specs:
+            present = key in config
+            if mode == "present_only" and not present:
+                continue
+            parsed = self._as_bool(config.get(key))
+            effective = parsed if parsed is not None else default
+            if mode == "false_only" and effective:
+                continue
+            if present and parsed is not None:
+                val = effective
+                status_txt = "true" if effective else "false"
+            else:
+                status_txt = f"unset (defaults to {'true' if default else 'false'})"
+                val = status_txt
+
+            if effective:
+                detail = true_detail if mode == "present_only" or key != "createNewDesktop" else f"{key} is {status_txt}: {true_detail}"
+            else:
+                detail = false_detail if mode == "present_only" else f"{key} is {status_txt}: {false_detail}"
+
+            notes.append({"key": key, "value": val, "scope": scope, "detail": detail})
+
+        if "allowScreenCapture" in config and "allowScreenSharing" not in config:
+            notes.append({
+                "key": "allowScreenCapture",
+                "value": config["allowScreenCapture"],
+                "scope": "RDP",
+                "detail": (
+                    "Legacy allowScreenCapture is present, but SEB 3.10.x maps "
+                    "window capture and remote-connection policy from allowScreenSharing."
+                ),
+            })
+
+        # sebServicePolicy & sebServiceIgnore
+        raw_policy = config.get("sebServicePolicy")
+        service_policy = raw_policy if isinstance(raw_policy, int) and not isinstance(raw_policy, bool) else None
+        service_ignore = bool(self._as_bool(config.get("sebServiceIgnore")))
+        policy_label = SERVICE_POLICY_NAMES.get(
+            service_policy,
+            f"unset (defaults to {SERVICE_POLICY_NAMES[0]})" if raw_policy is None else str(raw_policy),
+        )
+        if not service_ignore and (service_policy is None or service_policy == 0):
+            notes.append({
+                "key": "sebServicePolicy / sebServiceIgnore",
+                "value": f"policy={policy_label}, ignore={service_ignore}",
+                "scope": "RDP / VMware",
+                "detail": (
+                    "SEB requires SafeExamBrowser.Service (Mandatory). Running the "
+                    "service enforces fDenyTSConnections=1 (drops RDP) and VMware VDM "
+                    "EnableShade; stopping the service requires ServiceOperation to be patched."
+                ),
+            })
+        else:
+            notes.append({
+                "key": "sebServicePolicy / sebServiceIgnore",
+                "value": f"policy={policy_label}, ignore={service_ignore}",
+                "scope": "RDP / VMware",
+                "detail": (
+                    "SEB does not strictly require SafeExamBrowser.Service "
+                    "(Optional/Warn or sebServiceIgnore=true)."
+                ),
+            })
+
+        return notes
 
     def _analyze_header_findings(self, result: dict):
         """Add findings based on header analysis."""
@@ -369,6 +521,14 @@ class SEBConfigAnalyzer:
             self.report.add("security", "Process Whitelist", "info",
                            f"{len(procs)} whitelisted processes")
 
+        for note in result.get("rdp_vmware_notes", []):
+            self.report.add(
+                "rdp_vmware",
+                f"{note['scope']}: {note['key']}",
+                "info",
+                note["detail"],
+            )
+
 
 def print_config_result(result: dict):
     """Pretty-print config analysis results."""
@@ -405,3 +565,9 @@ def print_config_result(result: dict):
                 print(f"  {k}: {len(v)} entries")
             else:
                 print(f"  {k}: {str(v)[:60]}")
+
+    if result.get("rdp_vmware_notes"):
+        cprint("\n── RDP & VMware Behavior Notes ──", "CYAN", bold=True)
+        for note in result["rdp_vmware_notes"]:
+            cprint(f"  [{note['scope']}] {note['key']} = {note['value']}", "YELLOW")
+            print(f"      {note['detail']}")

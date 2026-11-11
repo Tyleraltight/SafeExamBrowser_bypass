@@ -159,6 +159,34 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 powershell -ExecutionPolicy Bypass -File "script.ps1"
 ```
 
+### VMware 中提示 "Face detection model could not be loaded"（人脸检测模型无法加载）
+
+**此问题超出虚拟机与显示器补丁的作用范围。** SEB v3.10.1 本身不包含任何人脸检测模块（`SafeExamBrowser.Proctoring.dll` 仅实现了用于定时桌面截图的 `ScreenProctoringImplementation`）。`"Face detection model could not be loaded"` 报错来自**考试平台自身在浏览器端运行的 JavaScript / WASM / WebGL 监考脚本**（例如 face-api.js、TensorFlow.js、MediaPipe 或 ONNX Runtime Web），运行在 SEB 内嵌的 Chromium 浏览器（CEF）中。
+
+即使 Windows 自带的"相机"应用可以正常预览（它直接使用 UWP/MediaFoundation 接口），浏览器端的人脸检测模型仍依赖 **WebGL / WebGL2** 与模型文件加载；在 VMware 中未开启 3D 加速时极易失败。另外，新版 `seb-patcher` 已保留 `IntegrityModule` 中的 `TryCalculateBrowserExamKey` 与 `TryCalculateAppSignatureKey` 原样逻辑，避免破坏 `X-SafeExamBrowser-RequestHash` 请求头。
+
+虚拟机内排查步骤：
+1. **开启 VMware 3D 图形加速**：关闭虚拟机后，在 **虚拟机设置 -> 显示器** 中勾选 **加速 3D 图形**（或在 `.vmx` 中配置 `mks.enable3d = "TRUE"`），并确认已安装 VMware Tools SVGA 3D 驱动。
+2. **在普通 Chrome/Edge 中测试 WebGL**：在虚拟机内打开常规 Chrome 或 Edge，访问 `chrome://gpu` 查看 WebGL / WebGL2 状态，并测试考试平台的摄像头/模型自检是否可以通过。
+3. **查看 SEB 浏览器日志**：检查 `%LOCALAPPDATA%\SafeExamBrowser\Logs\*_Browser.log` 中的 `[INFO:CONSOLE]` 日志，确认具体失败原因（如 WebGL 上下文创建失败、WASM 编译异常、CORS 或模型 `.json`/`.bin`/`.wasm` 请求失败）。
+4. **检查 Windows 相机权限**：确认 Windows 设置 -> 隐私 -> 相机 中已允许桌面应用访问摄像头。
+
+### 通过 Windows 远程桌面（RDP）运行 SEB
+
+SEB v3.10.1 在多个程序集中设置了针对 RDP 的限制，仅修改 `SafeExamBrowser.Monitoring.dll` 无法正常工作：
+
+1. **`RemoteSessionDetector`（`SafeExamBrowser.Monitoring.dll`）与 `RemoteSessionOperation`（`SafeExamBrowser.exe`）**：通过 `SystemInformation.TerminalServerSession`（`SM_REMOTESESSION`）检测远程会话；当 `.seb` 配置中的 `allowScreenSharing` 为 `false`（默认值）时直接中止启动。
+2. **`WDA_EXCLUDEFROMCAPTURE`（`SafeExamBrowser.UserInterface.Shared.dll` / `SafeExamBrowser.Client.exe`）**：`WindowExtensions.ExcludeFromCapture` 与 `WindowGuardOperation` 会调用 `SetWindowDisplayAffinity(..., 17)`，导致 SEB 窗口在 RDP 画面中显示为**全黑或完全不可见**。
+3. **`CreateNewDesktop` / `SwitchDesktop`（`SafeExamBrowser.exe`）**：`KioskModeOperation` 默认启用 `CreateNewDesktop`（`createNewDesktop = true`），会创建独立桌面并切换过去启动 `Client.exe`，这在 RDP 会话中极易失败、卡死或断开。
+4. **会话切换锁屏（`SafeExamBrowser.Client.exe`）**：当 `disableSessionChangeLockScreen` 为 `false` 时，`MonitoringResponsibility.Sentinel_SessionChanged` 会在 `RemoteConnect` / `RemoteDisconnect` 等会话事件发生时触发红色锁屏界面。
+5. **`SafeExamBrowser.Service` 修改 `fDenyTSConnections`**：`RemoteConnectionConfiguration` 会将 `HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections` 设为 `1`（直接断开并禁用 RDP）；而当 `.seb` 中 `sebServicePolicy = Mandatory` 且 `sebServiceIgnore = false` 时，停用服务又会导致 `ServiceOperation` 中止 SEB。
+6. **WMI 显示器检测（`SafeExamBrowser.Monitoring.dll`）**：`DisplayMonitor` 的 `WmiMonitorBasicDisplayParams` 查询在 RDP 虚拟显示适配器下会失败或返回 0 个显示器。
+
+**新版补丁的应对方式：**
+- `seb-patcher` 同步处理 `RemoteSessionDetector`、`RemoteSessionOperation`、`WindowExtensions.ExcludeFromCapture` / `WindowGuardOperation`、`KioskModeOperation`（避免在 RDP 会话中因 `CreateNewDesktop` / `SwitchDesktop` 失败）、`MonitoringResponsibility.Sentinel_SessionChanged` 以及 `ServiceOperation` / `RemoteConnectionConfiguration`。
+- `display-patcher` 已移除阻塞非交互/RDP 运行的 `Console.ReadKey()` 等待。
+- 请务必以管理员身份运行 `scripts\patch_all.cmd`（会自动停止并禁用 `SafeExamBrowser.Service`，并对全部所需程序集打补丁并校验）。切勿单独使用只替换 `SafeExamBrowser.Monitoring.dll` 的脚本（如 `force_replace.cmd`），否则会导致 `SafeExamBrowser.exe`、`SafeExamBrowser.Client.exe`、`SafeExamBrowser.Configuration.dll` 和 `SafeExamBrowser.UserInterface.Shared.dll` 保持未补丁状态。
+
 ---
 
 ## 支持

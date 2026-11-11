@@ -159,6 +159,34 @@ Or run with bypass flag:
 powershell -ExecutionPolicy Bypass -File "script.ps1"
 ```
 
+### "Face detection model could not be loaded" in VMware
+
+**This is outside the scope of the VM and display patchers.** SEB v3.10.1 itself has no built-in face-detection module (`SafeExamBrowser.Proctoring.dll` only implements `ScreenProctoringImplementation` for periodic desktop screenshots). The `"Face detection model could not be loaded"` error comes from the **exam platform's browser-side JavaScript / WASM / WebGL proctoring** (such as face-api.js, TensorFlow.js, MediaPipe, or ONNX Runtime Web) running inside SEB's embedded Chromium browser (CEF).
+
+Even if the Windows Camera app works (it uses UWP/MediaFoundation directly), browser-based face-detection models depend on **WebGL / WebGL2** and model asset downloads, which often fail in VMware when 3D acceleration is disabled. Also note that `seb-patcher` preserves `TryCalculateBrowserExamKey` and `TryCalculateAppSignatureKey` in `IntegrityModule` so `X-SafeExamBrowser-RequestHash` headers are not broken.
+
+Troubleshooting steps inside the VM:
+1. **Enable VMware 3D acceleration**: Shut down the VM, enable **VM Settings -> Display -> Accelerate 3D graphics** (or add `mks.enable3d = "TRUE"` to your `.vmx` file), and confirm VMware Tools SVGA 3D drivers are installed.
+2. **Verify WebGL in Chrome/Edge**: Open regular Chrome or Edge inside the VM, visit `chrome://gpu`, and check that WebGL / WebGL2 are hardware-accelerated (or active) and that the exam platform's camera/model check passes there.
+3. **Inspect SEB browser logs**: Check `%LOCALAPPDATA%\SafeExamBrowser\Logs\*_Browser.log` for `[INFO:CONSOLE]` errors (WebGL context creation failure, WASM errors, CORS, or failed model `.json`/`.bin`/`.wasm` requests).
+4. **Check Windows camera privacy**: Ensure Windows Settings -> Privacy -> Camera allows desktop applications to access the camera.
+
+### Running SEB over Windows Remote Desktop (RDP)
+
+SEB v3.10.1 enforces several RDP-specific barriers across multiple assemblies, so patching only `SafeExamBrowser.Monitoring.dll` is not enough:
+
+1. **`RemoteSessionDetector` (`SafeExamBrowser.Monitoring.dll`) & `RemoteSessionOperation` (`SafeExamBrowser.exe`)**: Detect `SystemInformation.TerminalServerSession` (`SM_REMOTESESSION`) and abort startup when `.seb` key `allowScreenSharing` is `false` (default).
+2. **`WDA_EXCLUDEFROMCAPTURE` (`SafeExamBrowser.UserInterface.Shared.dll` / `SafeExamBrowser.Client.exe`)**: `WindowExtensions.ExcludeFromCapture` and `WindowGuardOperation` call `SetWindowDisplayAffinity(..., 17)`, causing SEB windows to appear **black or completely invisible** over RDP.
+3. **`CreateNewDesktop` / `SwitchDesktop` (`SafeExamBrowser.exe`)**: `KioskModeOperation` defaults to `CreateNewDesktop` (`createNewDesktop = true`), creating an isolated desktop and launching `Client.exe` on it, which frequently fails or freezes inside an RDP session.
+4. **Session-change lock screen (`SafeExamBrowser.Client.exe`)**: `MonitoringResponsibility.Sentinel_SessionChanged` triggers the red lock screen on `RemoteConnect` / `RemoteDisconnect` events when `disableSessionChangeLockScreen` is `false`.
+5. **`fDenyTSConnections` in `SafeExamBrowser.Service`**: `RemoteConnectionConfiguration` sets `HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections = 1` (which drops RDP connections), while `ServiceOperation` aborts if the service is stopped under `sebServicePolicy = Mandatory` and `sebServiceIgnore = false`.
+6. **WMI display check (`SafeExamBrowser.Monitoring.dll`)**: `DisplayMonitor` WMI queries (`WmiMonitorBasicDisplayParams`) fail or return 0 monitors on RDP virtual display adapters.
+
+**How the updated toolkit handles RDP:**
+- `seb-patcher` patches `RemoteSessionDetector`, `RemoteSessionOperation`, `WindowExtensions.ExcludeFromCapture` / `WindowGuardOperation`, `KioskModeOperation` (avoiding `CreateNewDesktop` / `SwitchDesktop` failure in RDP sessions), `MonitoringResponsibility.Sentinel_SessionChanged`, and `ServiceOperation` / `RemoteConnectionConfiguration`.
+- `display-patcher` patches `DisplayMonitor` without blocking on interactive key prompts.
+- Always run `scripts\patch_all.cmd` as Administrator (which stops/disables `SafeExamBrowser.Service` and patches all required binaries together). Do **not** use standalone `Monitoring.dll`-only replacement scripts such as `force_replace.cmd`, as they leave `SafeExamBrowser.exe`, `SafeExamBrowser.Client.exe`, `SafeExamBrowser.Configuration.dll`, and `SafeExamBrowser.UserInterface.Shared.dll` unpatched.
+
 ---
 
 ## Support

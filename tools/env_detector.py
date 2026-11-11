@@ -200,7 +200,7 @@ class EnvDetector:
     # ── Remote Desktop Detection ───────────────────────────────
 
     def _check_remote_desktop(self):
-        """Check for remote desktop / screen sharing."""
+        """Check for active RDP session and remote desktop / screen sharing software."""
         cprint("\n  ── Remote Desktop Detection ──", "MAGENTA", bold=True)
         rd_procs = [
             ("mstsc", "RDP Client"),
@@ -216,26 +216,47 @@ class EnvDetector:
             ("parsec", "Parsec"),
         ]
 
-        found = []
+        found_procs = []
+        session_indicators = []
+        is_rdp_session = False
+
+        if is_windows():
+            try:
+                import ctypes
+                # SM_REMOTESESSION (0x1000) is non-zero inside a Windows Terminal Services / RDP session
+                if ctypes.windll.user32.GetSystemMetrics(0x1000) != 0:
+                    is_rdp_session = True
+                    session_indicators.append("Windows RDP session (SM_REMOTESESSION)")
+            except Exception:
+                pass
+
+            session_name = os.environ.get("SESSIONNAME", "")
+            if session_name.upper().startswith("RDP-"):
+                is_rdp_session = True
+                session_indicators.append(f"Windows RDP session (SESSIONNAME={session_name})")
+
         all_procs = get_all_processes()
         proc_names = [p.get("name", "").lower() for p in all_procs]
 
         for proc_name, desc in rd_procs:
             for pn in proc_names:
                 if proc_name.lower() in pn:
-                    found.append(desc)
+                    found_procs.append(desc)
                     break
 
-        if found:
-            for f in found:
-                cprint(f"    [!] Remote access software: {f}", "YELLOW")
+        all_indicators = session_indicators + found_procs
+        if all_indicators:
+            for f in all_indicators:
+                cprint(f"    [!] Remote access indicator: {f}", "YELLOW")
                 self.report.add("env", f"Remote Desktop: {f}", "warning",
-                               f"Remote access software detected")
+                               f"Remote access indicator detected: {f}")
         else:
-            cprint("    [OK] No remote desktop software detected", "GREEN")
+            cprint("    [OK] No remote desktop session or software detected", "GREEN")
             self.report.add("env", "Remote Desktop", "ok", "None detected")
 
-        self.results["remote_desktop"] = found
+        self.results["remote_desktop"] = found_procs
+        self.results["rdp_session_indicators"] = session_indicators
+        self.results["is_rdp_session"] = is_rdp_session
 
     # ── Monitoring / Analysis Tools ────────────────────────────
 
@@ -415,6 +436,8 @@ def print_env_result(result: dict):
     else:
         cprint("  [OK] No obvious VM indicators", "GREEN")
 
+    if result.get("is_rdp_session"):
+        cprint("  [!] Active Windows RDP session detected (RemoteSessionDetector / WDA_EXCLUDEFROMCAPTURE / CreateNewDesktop apply)", "YELLOW")
     if result.get("remote_desktop"):
         cprint("  [!] Remote desktop software may be detected by SEB", "YELLOW")
 
